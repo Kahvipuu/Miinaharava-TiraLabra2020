@@ -4,8 +4,8 @@ Teköäly luodaan valmiiseen miinaharavaohjelmaan, joka löytyy: [Minesweeper](h
 
 ## Dokumentaatio
 ### Määrittelydokumentti
--	[Määrittelydokumentti](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/edit/master/documentation-tiralab2020/maarittely.md)
+-	[Määrittelydokumentti](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/maarittely.md)
 
 ### Viikkoraportit
--   [Viikko1](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/edit/master/documentation-tiralab2020/viikkoraportti1.md)
+-   [Viikko1](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti1.md)
 
