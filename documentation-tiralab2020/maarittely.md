@@ -23,6 +23,9 @@ Tilaa tarvitsen pelilaudalliselle olioita, ja olioihin kirjataan tarpeellinen ti
 
 ## Lähteet
 Antti Laaksonen, Tietorakenteet ja algoritmit, 2019 (Tirakirja, https://github.com/pllk/tirakirja)
+
 Richard Kaye, Some Minesweeper Configurations, 2007 (http://web.mat.bham.ac.uk/R.W.Kaye/minesw/minesw.pdf)
+
 Richard Kaye, Minesweeper and NP-completeness (Richard Kaye's Minesweeper Pages, http://web.mat.bham.ac.uk/R.W.Kaye/minesw/minesw.htm)
+
 Code-Bullet, minesweeper AI, 2018 (https://github.com/Code-Bullet/minesweeper-AI)
