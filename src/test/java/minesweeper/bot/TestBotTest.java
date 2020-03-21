@@ -21,6 +21,7 @@ public class TestBotTest {
     private Bot bot;
     private MinefieldGenerator generator;
     private Board board;
+
     @Before
     public void setUp() {
         this.bot = BotSelect.getBot();
