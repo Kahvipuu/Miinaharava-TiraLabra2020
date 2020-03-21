@@ -1,4 +1,4 @@
-# Miinaharava tekoäly [![codecov](https://codecov.io/gh/Kahvipuu/Miinaharava-TiraLabra2020/branch/master/graph/badge.svg)](https://codecov.io/gh/Kahvipuu/Miinaharava-TiraLabra2020)
+# Miinaharava tekoäly [![Build Status](https://travis-ci.org/Kahvipuu/Miinaharava-TiraLabra2020.svg?branch=master)](https://travis-ci.org/Kahvipuu/Miinaharava-TiraLabra2020) [![codecov](https://codecov.io/gh/Kahvipuu/Miinaharava-TiraLabra2020/branch/master/graph/badge.svg)](https://codecov.io/gh/Kahvipuu/Miinaharava-TiraLabra2020)
 
 Teköäly luodaan valmiiseen miinaharavaohjelmaan, joka löytyy: [Minesweeper](https://github.com/TiraLabra/minesweeper)
 
