@@ -40,8 +40,9 @@ public class TiraBot implements Bot {
 
     @Override
     public Move makeMove(Board board) {
-
-        processLastMove(board);
+        
+        // vielä kesken
+        // processLastMove(board);
 
         if (!nextMoves.isEmpty()) {
             latestMove = nextMoves.pollFirst();
