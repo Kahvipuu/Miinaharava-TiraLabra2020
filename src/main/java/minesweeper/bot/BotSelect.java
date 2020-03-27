@@ -14,6 +14,6 @@ public class BotSelect {
      */
     public static Bot getBot(Board board) {
         // CHANGE THIS LINE TO USE YOUR OWN BOT
-        return new TiraBot(board);
+        return new TestBot();
     }
 }

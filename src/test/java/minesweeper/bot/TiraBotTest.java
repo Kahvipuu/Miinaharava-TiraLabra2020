@@ -20,9 +20,9 @@ public class TiraBotTest {
     @Before
     public void setUp() {
         // toivottavaa ilmeisesti vaihtaa tähän: this.tiraBot = BotSelect.getBot();
-        this.tiraBot = new TiraBot();
         this.generator = new MinefieldGenerator();
         this.board = new Board(generator, 10, 10, 3);
+        this.tiraBot = new TiraBot(this.board);
     }
     
     @After

@@ -29,15 +29,15 @@ public class ShadowSquare {
         this.locationY = y;
     }
 
-    public void incrementFlags(){
-        this.surroundingFlags ++;
-        this.surroundingNotKnown --;
+    public void incrementFlags() {
+        this.surroundingFlags++;
+        this.surroundingNotKnown--;
     }
-    
-    public void decreaseNotKnown(){
-        this.surroundingNotKnown --;
+
+    public void decreaseNotKnown() {
+        this.surroundingNotKnown--;
     }
-    
+
     /**
      * Get the X coordinate of the Square
      *
@@ -100,16 +100,15 @@ public class ShadowSquare {
     public int surroundingFlags() {
         return this.surroundingFlags;
     }
-    
+
     public int surroundingNotKnown() {
         return this.surroundingNotKnown;
     }
 
-    public void setSurroundingMines(int mines){
+    public void setSurroundingMines(int mines) {
         assert (this.surroundingMines == 9 || this.surroundingMines == mines); // testattava !!
         this.surroundingMines = mines;
     }
-    
 
     /**
      * Whether this Square has been resolved

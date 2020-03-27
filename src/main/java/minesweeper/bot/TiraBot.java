@@ -14,7 +14,6 @@ import minesweeper.model.GameStats;
 import minesweeper.model.Move;
 import minesweeper.model.MoveType;
 import minesweeper.model.Highlight;
-import minesweeper.model.Pair;
 import minesweeper.model.ShadowSquare;
 import minesweeper.model.Square;
 
@@ -110,7 +109,7 @@ public class TiraBot implements Bot {
                 for (int yy = -1; yy < 2; yy++) {
                     if (x + xx >= 0 && y + yy >= 0 && xx + yy != 0) {
                         ShadowSquare sq = shadowBoard[x + xx][y + yy];
-                        nextSquaresToCheck.add(sq);                        
+                        nextSquaresToCheck.add(sq);
                     }
                 }
             }
@@ -148,7 +147,8 @@ public class TiraBot implements Bot {
     }
 
     private void setSurroundingToFlags(int x, int y) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
+        //To change body of generated methods, choose Tools | Templates.
     }
 
 }
