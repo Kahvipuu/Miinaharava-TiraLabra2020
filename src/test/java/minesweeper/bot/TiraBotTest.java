@@ -3,6 +3,7 @@ package minesweeper.bot;
 import minesweeper.model.Move;
 import minesweeper.generator.MinefieldGenerator;
 import minesweeper.model.Board;
+import minesweeper.model.MoveType;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -32,8 +33,7 @@ public class TiraBotTest {
     @Test
     public void tiraBotGivesMove() {
         Move move = this.tiraBot.makeMove(this.board);
-        assertTrue(move.x == 1);
-        assertTrue(move.y == 1);
+        assertTrue(move.type == MoveType.OPEN);
     }
 
     // TODO add test methods here.
