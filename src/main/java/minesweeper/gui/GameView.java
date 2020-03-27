@@ -82,7 +82,7 @@ public class GameView {
             buttonSize = 18;
         }
 
-        this.bot = BotSelect.getBot();
+        this.bot = BotSelect.getBot(board);
 
         botButton = new Button("Help (bot)");
         botButton.setOnMouseClicked(e -> {
