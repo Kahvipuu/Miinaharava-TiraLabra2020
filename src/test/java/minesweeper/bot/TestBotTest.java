@@ -26,7 +26,7 @@ public class TestBotTest {
     public void setUp() {
         this.generator = new MinefieldGenerator();
         this.board = new Board(generator, 10, 10, 3);
-        this.bot = BotSelect.getBot(this.board);
+        this.bot = new TestBot();
     }
     
     @After

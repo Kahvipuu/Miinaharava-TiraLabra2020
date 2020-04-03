@@ -6,6 +6,7 @@ package minesweeper.model;
 public class ShadowSquare {
 
     private boolean resolved;
+    private boolean opened;
     private boolean isFlagged;
     private int surroundingMines; //Number of surrounding squares with mines
     private int surroundingFlags;
@@ -18,18 +19,20 @@ public class ShadowSquare {
      *
      * @param x X coordinate
      * @param y Y coordinate
+     * @param neighbours is number of surrounding squares
      */
-    public ShadowSquare(int x, int y) {
+    public ShadowSquare(int x, int y, int neighbours) {
         this.resolved = false;
+        this.opened = false;
         this.isFlagged = false;
-        this.surroundingMines = 9; // testin how to implement, not known before opening and should be changed only once
+        this.surroundingMines = 15; // testing how to implement, not known before opening and should be changed only once
         this.surroundingFlags = 0;
-        this.surroundingNotKnown = 8;
+        this.surroundingNotKnown = neighbours;
         this.locationX = x;
         this.locationY = y;
     }
 
-    public void incrementFlags() {
+    public void incrementSurroundingFlags() {
         this.surroundingFlags++;
         this.surroundingNotKnown--;
     }
@@ -83,9 +86,28 @@ public class ShadowSquare {
         return this.isFlagged;
     }
 
-    public void toggleFlagged() {
-        this.isFlagged = !this.isFlagged;
-        this.resolved = !this.resolved;
+    /**
+     * set square to flagged, not reversable
+     */
+    public void setToFlagged() {
+        this.isFlagged = true;
+        this.resolved = true;
+    }
+
+    /**
+     * set square status to opened, not reversable
+     */
+    public void setToOpened() {
+        this.opened = true;
+    }
+
+    /**
+     * returns boolean of squares opened status
+     *
+     * @return boolean
+     */
+    public boolean isOpened() {
+        return this.opened;
     }
 
     /**
@@ -97,23 +119,40 @@ public class ShadowSquare {
         return this.surroundingMines;
     }
 
+    /**
+     * returns number of flags surrounding the square
+     *
+     * @return int of surrounding flags
+     */
     public int surroundingFlags() {
         return this.surroundingFlags;
     }
 
+    /**
+     * returns number of not known neighbours
+     *
+     * @return int of surrounding squares program has no info of
+     */
     public int surroundingNotKnown() {
         return this.surroundingNotKnown;
     }
 
-    public void setSurroundingMines(int mines) {
-        assert (this.surroundingMines == 9 || this.surroundingMines == mines); // testattava !!
-        this.surroundingMines = mines;
+    /**
+     * sets number of surrounding mines to square, only changeable once when
+     * square is first opened
+     *
+     * @param mines number of mines surrounding the square
+     */
+    public void setNumberOfSurroundingMines(int mines) {
+        if (this.surroundingMines == 15) {
+            this.surroundingMines = mines;
+        }
     }
 
     /**
      * Whether this Square has been resolved
      *
-     * @return true if it is opened already, else false
+     * @return true if it is resolved already, else false
      */
     public boolean isResolved() {
         return this.resolved;
@@ -131,5 +170,9 @@ public class ShadowSquare {
         }
 
         return "" + this.surroundingMines;
+    }
+
+    public void setToResolved() {
+        this.resolved = true;
     }
 }

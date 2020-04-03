@@ -20,136 +20,353 @@ import minesweeper.model.Square;
 public class TiraBot implements Bot {
 
     private ArrayDeque<Move> nextMoves;
-    private ArrayDeque<ShadowSquare> nextSquaresToCheck;
+    private ArrayDeque<ShadowSquare> nextAlreadyOpenedSquaresToCheck;
+    private ArrayDeque<ShadowSquare> candidatesForNextMove;
     private Move latestMove;
     private Random rng = new Random();
     private ShadowSquare[][] shadowBoard;
     private int width;
     private int height;
-    private boolean firstMove;
+    private Board realBoard;
+    private GameStats gameStats;
 
-    public TiraBot(Board board) {
-        this.width = board.width;
-        this.height = board.height;
+    public TiraBot(int width, int height) {
+        this.width = width;
+        this.height = height;
         this.nextMoves = new ArrayDeque<>();
         this.latestMove = new Move(0, 0, Highlight.NONE);
         this.shadowBoard = new ShadowSquare[width][height];
-
+        this.nextAlreadyOpenedSquaresToCheck = new ArrayDeque<>();
+        this.candidatesForNextMove = new ArrayDeque<>();
         this.initialize();
+        addMoveToQueue(new Move(MoveType.OPEN, 2, 2));
     }
 
+    /**
+     * main method of giving moves to minesweeper program
+     * AI always starts with move open 2,2 and evaluates previous responses to decide next moves.
+     * If moves are not found then random open move is given
+     * @param board real board given by minesweeper program
+     * @return gives AI created move to minesweeper program
+     */
     @Override
     public Move makeMove(Board board) {
-        
-        // vielä kesken
-        // processLastMove(board);
 
+        this.realBoard = board;
+        processLastMove();
         if (!nextMoves.isEmpty()) {
             latestMove = nextMoves.pollFirst();
             return latestMove;
         }
 
-        Move randomMove = getRandomMove(board);
-        latestMove = randomMove;
-        return randomMove;
+        decideNextMove();
+        if (!nextMoves.isEmpty()) {
+            latestMove = nextMoves.pollFirst();
+            return latestMove;
+        }
+
+        addMoveToQueue(getRandomMove());
+        latestMove = nextMoves.pollFirst();
+        return latestMove;
     }
 
+    /**
+     * method used by main program, I just give arraylist of unopened squares
+     * This was propably used to give hints to player, I'am not implementing that
+     * @param board real board used by main program
+     * @return returns list of all unopened squares
+     */
     @Override
     public ArrayList<Move> getPossibleMoves(Board board) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Move> moves = new ArrayList<>();
+        moves.add(getRandomMove());
+        return moves;
     }
 
+    /**
+     * method used by main program, I haven't found use for this
+     * @param gameStats has some info thought to be useful by somebody else
+     */
     @Override
     public void setGameStats(GameStats gameStats) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //To change body of generated methods, choose Tools | Templates.
+        this.gameStats = gameStats;
     }
 
-    public void addMoveToQueue(Move move) {
-        this.nextMoves.addLast(move);
-    }
-
-    private Move getRandomMove(Board board) {
-        HashSet<Square> opened = board.getOpenSquares();
-        int x;
-        int y;
-
-        while (true) {
-            x = rng.nextInt(board.width);
-            y = rng.nextInt(board.height);
-            if (!opened.contains(board.board[x][y])) {
-                return new Move(MoveType.OPEN, x, y);
+    /**
+     * uses list provided by processing last move to decide next move if move is
+     * not found the main makeMove method handles it
+     */
+    protected void decideNextMove() {
+        while (!candidatesForNextMove.isEmpty()) {
+            ShadowSquare squareToEvaluate = candidatesForNextMove.pollFirst();
+            if (squareToEvaluate.isResolved()) {
+                continue;
             }
-        }
-
-    }
-
-    private void initialize() {
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
-                this.shadowBoard[x][y] = new ShadowSquare(x, y);
+            if (squareToEvaluate.surroundingFlags() == squareToEvaluate.surroundingMines()) {
+                addMoveToQueue(new Move(MoveType.CHORD, squareToEvaluate.getX(), squareToEvaluate.getY()));
+            }
+            if (squareToEvaluate.surroundingMines() == squareToEvaluate.surroundingNotKnown()) {
+                setSurroundingToFlags(squareToEvaluate);
             }
         }
     }
 
-    private void processLastMove(Board board) {
-        if (firstMove == true) {
-            firstMove = false;
-            return;
+    /**
+     * adds given move to queue of moves, queue should not be used outside of
+     * this method
+     * method should prune invalid moves
+     * @param move is a move added to queue of moves to be made
+     */
+    protected void addMoveToQueue(Move move) {
+        int x = move.x;
+        int y = move.y;
+        if (!shadowBoard[x][y].isResolved()) {
+            this.nextMoves.addLast(move);
+            if (move.type == MoveType.CHORD) {
+                shadowBoard[move.x][move.y].setToResolved();
+            }
+            if (move.type == MoveType.FLAG) {
+                shadowBoard[move.x][move.y].setToResolved();
+                shadowBoard[move.x][move.y].setToFlagged();
+            }
         }
+    }
+
+    /**
+     * Should process information from previous move and add promising squares
+     * to a list that is used to decide next move
+     */
+    protected void processLastMove() {
         int x = latestMove.x;
         int y = latestMove.y;
         MoveType type = latestMove.type;
-
-        int mines = board.getSquareAt(x, y).surroundingMines();
-        shadowBoard[x][y].setSurroundingMines(mines);
-
-        if (mines == 0) {
-            for (int xx = -1; xx < 2; xx++) {
-                for (int yy = -1; yy < 2; yy++) {
-                    if (x + xx >= 0 && y + yy >= 0 && xx + yy != 0) {
-                        ShadowSquare sq = shadowBoard[x + xx][y + yy];
-                        nextSquaresToCheck.add(sq);
-                    }
-                }
-            }
-
-        }
-        // nämä pitäisi laittaa nextToCheck jonoon... 
-        if (type == MoveType.FLAG) {
-            for (int xx = -1; xx < 2; xx++) {
-                for (int yy = -1; yy < 2; yy++) {
-                    if (x + xx >= 0 && y + yy >= 0 && xx + yy != 0) {
-                        ShadowSquare sq = shadowBoard[x + xx][y + yy];
-                        sq.incrementFlags();
-                        if (sq.surroundingFlags() == sq.surroundingMines()) {
-                            nextMoves.add(new Move(MoveType.CHORD, sq.getX(), sq.getY()));
-                        }
-                    }
-                }
-            }
-        }
+        ShadowSquare latestMoveSq = shadowBoard[x][y];
 
         if (type == MoveType.OPEN) {
-            for (int xx = -1; xx < 2; xx++) {
-                for (int yy = -1; yy < 2; yy++) {
-                    if (x + xx >= 0 && y + yy >= 0 && xx + yy != 0) {
-                        ShadowSquare sq = shadowBoard[x + xx][y + yy];
-                        sq.decreaseNotKnown();
-                        if (sq.surroundingMines() == sq.surroundingNotKnown()) {
-                            setSurroundingToFlags(sq.getX(), sq.getY());
-                        }
-                    }
-                }
-            }
+            int mines = realBoard.getSquareAt(x, y).surroundingMines();
+            setNumberOfMines(latestMoveSq, mines);
+            resolveMoveTypeOpen(latestMoveSq);
+        }
+
+        if (type == MoveType.CHORD) {
+            setSurroundingOpenedSquaresToBeChecked(latestMoveSq);
+        }
+
+        while (!nextAlreadyOpenedSquaresToCheck.isEmpty()) {
+            ShadowSquare squareToCheck = nextAlreadyOpenedSquaresToCheck.pollFirst();
+            setNumberOfMines(squareToCheck, realBoard.getSquareAt(squareToCheck.getX(), squareToCheck.getY()).surroundingMines());
+            resolveMoveTypeOpen(squareToCheck);
+        }
+
+        if (type == MoveType.FLAG) {
+            resolveMoveTypeFlag(latestMoveSq);
         }
 
     }
 
-    private void setSurroundingToFlags(int x, int y) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Method should only be used when previous moves have been evaluated gives
+     * moves to minesweeper program that sets squares surrounding this one to
+     * flags
+     *
+     * @param sq
+     */
+    protected void setSurroundingToFlags(ShadowSquare sq) {
+        ArrayList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
+        for (int x = 0; x < surroundingSquares.size(); x++) {
+            ShadowSquare surroundingSq = surroundingSquares.get(x);
+            if (!surroundingSq.isResolved()) {
+                addMoveToQueue(new Move(MoveType.FLAG, surroundingSq.getX(), surroundingSq.getY()));
+            }
+        }
+    }
+
+    /**
+     * sets square to opened status and gives surrounding squares information
+     * that this one was opened should not open square more than once also sets
+     * surrounding squares to be evaluated for possible next move
+     *
+     * @param sq
+     */
+    protected void resolveMoveTypeOpen(ShadowSquare sq) {
+        if (!sq.isOpened()) {
+            sq.setToOpened();
+
+            ArrayList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
+            for (int z = 0; z < surroundingSquares.size(); z++) {
+                ShadowSquare surroundingSq = surroundingSquares.get(z);
+                if (!surroundingSq.isResolved()) {
+                    surroundingSq.decreaseNotKnown();
+                    candidatesForNextMove.add(surroundingSq);
+                }
+            }
+        }
+    }
+
+    /**
+     * Used for chord moves and squares with zero mines sets surrounding squares
+     * to be evaluated, since they have been opened
+     *
+     * @param sq
+     */
+    protected void setSurroundingOpenedSquaresToBeChecked(ShadowSquare sq) {
+        ArrayList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
+        for (int z = 0; z < surroundingSquares.size(); z++) {
+            ShadowSquare surroundingSq = surroundingSquares.get(z);
+
+            if (!surroundingSq.isResolved() && !nextAlreadyOpenedSquaresToCheck.contains(surroundingSq)) {
+                nextAlreadyOpenedSquaresToCheck.addLast(surroundingSq);
+            }
+        }
+    }
+
+    /**
+     * returns ArrayList of squares surrounding given square uglyish code that I
+     * didn't want to repeat in multiple places
+     *
+     * @param sq
+     * @return
+     */
+    protected ArrayList<ShadowSquare> getSurroundingSquares(ShadowSquare sq) {
+        int x = sq.getX();
+        int y = sq.getY();
+        ArrayList<ShadowSquare> surroundingSquares = new ArrayList<>();
+        for (int xx = -1; xx < 2; xx++) {
+            for (int yy = -1; yy < 2; yy++) {
+                int xxx = xx + x;
+                int yyy = yy + y;
+                if (xxx >= 0 && xxx < this.width && yyy >= 0 && yyy < this.height) {
+                    if (xx == 0 && yy == 0) {
+                        continue;
+                    }
+                    surroundingSquares.add(this.shadowBoard[xxx][yyy]);
+                    //mildly ugly, should be cleaned if I get a better idea
+                }
+            }
+        }
+        return surroundingSquares;
+    }
+
+    /**
+     * gives information to surrounding squares that this square was flagged
+     * also sets surrounding squares to be evaluated for possible next move
+     *
+     * @param sq
+     */
+    protected void resolveMoveTypeFlag(ShadowSquare sq) {
+        ArrayList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
+        for (int x = 0; x < surroundingSquares.size(); x++) {
+            ShadowSquare surroundingSq = surroundingSquares.get(x);
+
+            if (!surroundingSq.isResolved()) {
+                surroundingSq.incrementSurroundingFlags();
+                candidatesForNextMove.add(surroundingSq);
+            }
+        }
+    }
+
+    /**
+     * sets number of mines to shadow square from what is given by the program
+     * adds square to a list of possible next moves to be evaluated and if mines
+     * are zero then checks surrounding squares and marks this square as
+     * evaluated
+     *
+     * @param sq square to set number of mines
+     * @param mines number of mines around this square
+     */
+    protected void setNumberOfMines(ShadowSquare sq, int mines) {
+        sq.setNumberOfSurroundingMines(mines);
+        if (mines > 0) {
+            candidatesForNextMove.addLast(sq);
+        }
+        if (mines == 0) {
+            sq.setToResolved();
+            setSurroundingOpenedSquaresToBeChecked(sq);
+        }
+    }
+
+    /**
+     * When all information has been used and still there is no good move to be
+     * made
+     *
+     * @return gives random open -type move from list of unresolved squares
+     */
+    protected Move getRandomMove() {
+        ArrayList<ShadowSquare> unresolved = getUnresolvedSquares();
+        int size = unresolved.size();
+        int random = rng.nextInt(size);
+        ShadowSquare sq = unresolved.get(random);
+        return new Move(MoveType.OPEN, sq.getX(), sq.getY());
+    }
+
+    /**
+     * Used to get a list of squares that still need to be resolved
+     *
+     * @return ArrayList of squares
+     */
+    public ArrayList<ShadowSquare> getUnresolvedSquares() {
+        ArrayList<ShadowSquare> unresolvedSquares = new ArrayList<>();
+        for (int x = 0; x < this.width; x++) {
+            for (int y = 0; y < this.height; y++) {
+                if (!shadowBoard[x][y].isResolved()) {
+                    unresolvedSquares.add(shadowBoard[x][y]);
+                }
+            }
+        }
+        return unresolvedSquares;
+    }
+
+    /**
+     *
+     * @param sq is the fake square At the moment this is method not used for
+     * anything.. to be deleted if use is not found..
+     */
+    protected void setSurroundingSquaresToResolved(ShadowSquare sq) {
+        ArrayList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
+        for (int x = 0; x < surroundingSquares.size(); x++) {
+            ShadowSquare surroundingSq = surroundingSquares.get(x);
+            surroundingSq.setToResolved();
+        }
+    }
+
+    /**
+     * returns shadowSquare at coordinates xy
+     * @param x width
+     * @param y height
+     * @return 
+     */
+    public ShadowSquare getSquare(int x, int y){
+        return this.shadowBoard[x][y];
+    }
+    
+    /**
+     * Initializes a fake board to be used to save information gained from the
+     * minesweeper program
+     */
+    private void initialize() {
+        for (int x = 0; x < this.width; x++) {
+            for (int y = 0; y < this.height; y++) {
+                // givin borders and corners different neighbours
+                if (x == 0 || y == 0 || x == this.height - 1 || y == this.width - 1) {
+                    if (x == 0 && y == 0) {
+                        this.shadowBoard[x][y] = new ShadowSquare(x, y, 3);
+                    }
+                    if (x == 0 && y == this.height - 1) {
+                        this.shadowBoard[x][y] = new ShadowSquare(x, y, 3);
+                    }
+                    if (x == this.width - 1 && y == 0) {
+                        this.shadowBoard[x][y] = new ShadowSquare(x, y, 3);
+                    }
+                    if (x == this.width - 1 && y == this.height - 1) {
+                        this.shadowBoard[x][y] = new ShadowSquare(x, y, 3);
+                    } else {
+                        this.shadowBoard[x][y] = new ShadowSquare(x, y, 5);
+                    }
+                } else {
+                    this.shadowBoard[x][y] = new ShadowSquare(x, y, 8);
+                }
+            }
+        }
     }
 
 }

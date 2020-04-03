@@ -13,32 +13,52 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TiraBotTest {
-    
-    private Bot tiraBot;
+
+    private TiraBot tiraBot;
     private MinefieldGenerator generator;
-    private Board board;
-            
+    private Board realBoard;
+    
     @Before
     public void setUp() {
-        // toivottavaa ilmeisesti vaihtaa tähän: this.tiraBot = BotSelect.getBot();
         this.generator = new MinefieldGenerator();
-        this.board = new Board(generator, 10, 10, 3);
-        this.tiraBot = new TiraBot(this.board);
+        this.realBoard = new Board(generator, 10, 10, 3);
+        this.tiraBot = new TiraBot(this.realBoard.width, this.realBoard.height);
     }
-    
+
     @After
     public void tearDown() {
     }
 
     @Test
-    public void tiraBotGivesMove() {
-        Move move = this.tiraBot.makeMove(this.board);
+    public void tiraBotGivesFirstMove() {
+        Move move = this.tiraBot.makeMove(this.realBoard);
         assertTrue(move.type == MoveType.OPEN);
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    @Test
+    public void hello() {
+    }
+
+
+    /* list of what to test:
+        public Move makeMove(Board board)
+        public ArrayList<Move> getPossibleMoves(Board board)
+        public void setGameStats(GameStats gameStats)
+        protected void decideNextMove()
+        protected void addMoveToQueue(Move move)
+        protected void processLastMove()
+        protected void setSurroundingToFlags(ShadowSquare sq)
+        protected void resolveMoveTypeOpen(ShadowSquare sq)
+        protected void setSurroundingOpenedSquaresToBeChecked(ShadowSquare sq)
+        protected ArrayList<ShadowSquare> getSurroundingSquares(ShadowSquare sq)
+        protected void resolveMoveTypeFlag(ShadowSquare sq)
+        protected void setNumberOfMines(ShadowSquare sq, int mines)
+        protected Move getRandomMove()
+        public ArrayList<ShadowSquare> getUnresolvedSquares()
+        protected void setSurroundingSquaresToResolved(ShadowSquare sq)
+        public ShadowSquare getSquare(int x, int y)
+        private void initialize()
+    
+    */
+    
 }

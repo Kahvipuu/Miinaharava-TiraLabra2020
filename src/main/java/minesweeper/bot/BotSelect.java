@@ -11,9 +11,11 @@ public class BotSelect {
     /**
      * Returns the currently used Bot implementation
      * @return An object implementing the Bot interface
+     * @param width of the real board
+     * @param height of the real board
      */
-    public static Bot getBot(Board board) {
+    public static Bot getBot(int width, int height) {
         // CHANGE THIS LINE TO USE YOUR OWN BOT
-        return new TestBot();
+        return new TiraBot(width, height);
     }
 }
