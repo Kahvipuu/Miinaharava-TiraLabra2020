@@ -43,9 +43,10 @@ public class TiraBot implements Bot {
     }
 
     /**
-     * main method of giving moves to minesweeper program
-     * AI always starts with move open 2,2 and evaluates previous responses to decide next moves.
-     * If moves are not found then random open move is given
+     * main method of giving moves to minesweeper program AI always starts with
+     * move open 2,2 and evaluates previous responses to decide next moves. If
+     * moves are not found then random open move is given
+     *
      * @param board real board given by minesweeper program
      * @return gives AI created move to minesweeper program
      */
@@ -72,7 +73,9 @@ public class TiraBot implements Bot {
 
     /**
      * method used by main program, I just give arraylist of unopened squares
-     * This was propably used to give hints to player, I'am not implementing that
+     * This was propably used to give hints to player, I'am not implementing
+     * that
+     *
      * @param board real board used by main program
      * @return returns list of all unopened squares
      */
@@ -85,6 +88,7 @@ public class TiraBot implements Bot {
 
     /**
      * method used by main program, I haven't found use for this
+     *
      * @param gameStats has some info thought to be useful by somebody else
      */
     @Override
@@ -113,8 +117,8 @@ public class TiraBot implements Bot {
 
     /**
      * adds given move to queue of moves, queue should not be used outside of
-     * this method
-     * method should prune invalid moves
+     * this method method should prune invalid moves
+     *
      * @param move is a move added to queue of moves to be made
      */
     protected void addMoveToQueue(Move move) {
@@ -331,14 +335,15 @@ public class TiraBot implements Bot {
 
     /**
      * returns shadowSquare at coordinates xy
+     *
      * @param x width
      * @param y height
-     * @return 
+     * @return
      */
-    public ShadowSquare getSquare(int x, int y){
+    public ShadowSquare getSquare(int x, int y) {
         return this.shadowBoard[x][y];
     }
-    
+
     /**
      * Initializes a fake board to be used to save information gained from the
      * minesweeper program
@@ -367,6 +372,46 @@ public class TiraBot implements Bot {
                 }
             }
         }
+    }
+
+    /**
+     *
+     * @return normal getter
+     */
+    public ArrayDeque<Move> getNextMoves() {
+        return nextMoves;
+    }
+
+    /**
+     *
+     * @return normal getter
+     */
+    public ArrayDeque<ShadowSquare> getNextAlreadyOpenedSquaresToCheck() {
+        return nextAlreadyOpenedSquaresToCheck;
+    }
+
+    /**
+     *
+     * @return normal getter
+     */
+    public ArrayDeque<ShadowSquare> getCandidatesForNextMove() {
+        return candidatesForNextMove;
+    }
+
+    /**
+     *
+     * @return normal getter
+     */
+    public Move getLatestMove() {
+        return latestMove;
+    }
+
+    /**
+     *
+     * @return normal getter
+     */
+    public ShadowSquare[][] getShadowBoard() {
+        return shadowBoard;
     }
 
 }

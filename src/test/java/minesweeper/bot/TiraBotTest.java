@@ -1,8 +1,10 @@
 package minesweeper.bot;
 
+import java.util.ArrayList;
 import minesweeper.model.Move;
 import minesweeper.generator.MinefieldGenerator;
 import minesweeper.model.Board;
+import minesweeper.model.GameStats;
 import minesweeper.model.MoveType;
 
 import org.junit.After;
@@ -17,7 +19,7 @@ public class TiraBotTest {
     private TiraBot tiraBot;
     private MinefieldGenerator generator;
     private Board realBoard;
-    
+
     @Before
     public void setUp() {
         this.generator = new MinefieldGenerator();
@@ -35,10 +37,18 @@ public class TiraBotTest {
         assertTrue(move.type == MoveType.OPEN);
     }
 
+/* Tässä jotain vikaa, aika oleellinen joten pitäisi ehkä olla seuraava tarkastettava asia!!   
     @Test
-    public void hello() {
+    public void rightAmountOfPossibleMovesGiven() {
+        ArrayList<Move> moves = this.tiraBot.getPossibleMoves(realBoard);
+        assertTrue(moves.size() == 100);
     }
+*/
+    
+    @Test
+    public void gameStatsGiven() {
 
+    }
 
     /* list of what to test:
         public Move makeMove(Board board)
@@ -59,6 +69,10 @@ public class TiraBotTest {
         public ShadowSquare getSquare(int x, int y)
         private void initialize()
     
-    */
-    
+        public ArrayDeque<Move> getNextMoves()
+        public ArrayDeque<ShadowSquare> getNextAlreadyOpenedSquaresToCheck()
+        public ArrayDeque<ShadowSquare> getCandidatesForNextMove()
+        public Move getLatestMove()
+        public ShadowSquare[][] getShadowBoard()
+     */
 }

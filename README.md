@@ -21,3 +21,4 @@ kesken
 -   [Viikko2](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti2.md)
 -   [Viikko3](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti3.md)
 -   [Viikko4](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti4.md)
+-   [Viikko5](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti5.md)
