@@ -1,7 +1,5 @@
 package minesweeper.bot;
 
-import minesweeper.model.Board;
-
 /**
  * This class allows selecting the bot among multiple implementations
  * The bot is selected by changing the static method to return the

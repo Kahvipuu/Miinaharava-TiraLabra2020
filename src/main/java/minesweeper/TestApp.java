@@ -15,7 +15,6 @@ import minesweeper.model.Move;
 import minesweeper.model.Board;
 import minesweeper.generator.MinefieldGenerator;
 import minesweeper.bot.Bot;
-import minesweeper.bot.TestBot;
 import minesweeper.bot.BotExecutor;
 import minesweeper.bot.TiraBot;
 

@@ -28,7 +28,7 @@ jacocoTestReport {
      
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: ['minesweeper/App*', 'minesweeper/TestApp*', 'minesweeper/StorageSingleton*', 'minesweeper/bot/Bot*', 'minesweeper/bot/TestBot*', 'minesweeper/gui/**', 'minesweeper/generator/**', 'minesweeper/model/Board*', 'minesweeper/model/GameS*', 'minesweeper/model/High*', 'minesweeper/model/Move*', 'minesweeper/model/Pair**', 'minesweeper/model/Square*'])
+            fileTree(dir: it, exclude: ['minesweeper/App*', 'minesweeper/TestApp*', 'minesweeper/StorageSingleton*', 'minesweeper/bot/Bot*', 'minesweeper/bot/TestBot*', 'minesweeper/gui/**', 'minesweeper/generator/**', 'minesweeper/model/Board*', 'minesweeper/model/GameS*', 'minesweeper/model/High*', 'minesweeper/model/Move*', 'minesweeper/model/Pair*', 'minesweeper/model/Square*'])
         }))
     } 
 }
