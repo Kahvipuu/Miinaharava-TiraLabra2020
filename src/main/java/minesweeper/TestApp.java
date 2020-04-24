@@ -17,15 +17,17 @@ import minesweeper.generator.MinefieldGenerator;
 import minesweeper.bot.Bot;
 import minesweeper.bot.TestBot;
 import minesweeper.bot.BotExecutor;
+import minesweeper.bot.TiraBot;
 
 public class TestApp {
 
     public GameStats gameStats;
     public Board board;
     /* Place your bot here */
-    public Bot bot = new TestBot();
+    public Bot bot = new TiraBot(10, 10);
 
     public TestApp(long seed, int width, int height, int mines) {
+        System.out.println("seed:" +seed);
         board = new Board(new MinefieldGenerator(seed), width, height, mines);
         BlockingQueue<Move> moveQueue = new LinkedBlockingQueue<>();
         BotExecutor botExecutor = new BotExecutor(moveQueue, bot, board);
@@ -48,7 +50,7 @@ public class TestApp {
         ArrayList<Pair<GameStats, Board>> stats = new ArrayList<>();
         //Play 100 games and save the stats and board to array
         for (int i = 0; i < 100; i++) {
-            TestApp app = new TestApp(new Random().nextLong(), 10, 16, 50);
+            TestApp app = new TestApp(new Random().nextLong(), 10, 10, 10);
             stats.add(new Pair<GameStats, Board>(app.gameStats, app.board));
         }
         //Sets the out stream to file test.txt in root of project.

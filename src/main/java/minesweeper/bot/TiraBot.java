@@ -326,8 +326,10 @@ public class TiraBot implements Bot {
      * @return gives random open -type move from list of unresolved squares
      */
     protected Move getRandomMove() {
-
         ArrayList<ShadowSquare> unopened = getUnopenedNotFlaggedSquares();
+        if (unopened.size() == 0){
+            return new Move(2, 2, Highlight.GREEN);
+        }
         ShadowSquare sq = unopened.get(rng.nextInt(unopened.size()));
         System.out.println("random move sq:" + sq.getX() + ":" + sq.getY());
         return new Move(MoveType.OPEN, sq.getX(), sq.getY());
