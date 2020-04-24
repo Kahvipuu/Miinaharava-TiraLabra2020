@@ -179,11 +179,13 @@ public class TiraBot implements Bot {
         }
 
         //debug
-        System.out.println("count:" + debugCounter + " nextAlreadyOpenedSize:" + nextAlreadyOpenedSquaresToCheck.size());
+        System.out.println("count:" + debugCounter
+                + " nextAlreadyOpenedSize:" + nextAlreadyOpenedSquaresToCheck.size());
 
         while (!nextAlreadyOpenedSquaresToCheck.isEmpty()) {
             ShadowSquare squareToCheck = nextAlreadyOpenedSquaresToCheck.pollFirst();
-            setNumberOfMines(squareToCheck, realBoard.getSquareAt(squareToCheck.getX(), squareToCheck.getY()).surroundingMines());
+            setNumberOfMines(squareToCheck,
+                    realBoard.getSquareAt(squareToCheck.getX(), squareToCheck.getY()).surroundingMines());
             resolveMoveTypeOpen(squareToCheck);
         }
 
@@ -242,10 +244,10 @@ public class TiraBot implements Bot {
     }
 
     /**
-     * Used for chord moves and squares with zero mines sets surrounding squares
-     * to be evaluated, since they have been opened
+     * Used for chord moves and squares with zero mines, sets surrounding
+     * squares to be evaluated, since they have been opened
      *
-     * @param sq
+     * @param sq square that was opened with chord or contains zero mines
      */
     protected void setSurroundingOpenedSquaresToBeChecked(ShadowSquare sq) {
         ArrayList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
@@ -260,8 +262,9 @@ public class TiraBot implements Bot {
      * returns ArrayList of squares surrounding given square uglyish code that I
      * didn't want to repeat in multiple places
      *
-     * @param sq
-     * @return
+     * @param sq returns neighbours of this ShadowSquare as ArrayList (list type
+     * subject to change)
+     * @return ArrayList of neighbouring ShadowSquares
      */
     protected ArrayList<ShadowSquare> getSurroundingSquares(ShadowSquare sq) {
         int x = sq.getX();
@@ -287,7 +290,7 @@ public class TiraBot implements Bot {
      * gives information to surrounding squares that this square was flagged
      * also sets surrounding squares to be evaluated for possible next move
      *
-     * @param sq
+     * @param sq ShadowSquare that was flagged
      */
     protected void resolveMoveTypeFlag(ShadowSquare sq) {
         ArrayList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
@@ -327,7 +330,7 @@ public class TiraBot implements Bot {
      */
     protected Move getRandomMove() {
         ArrayList<ShadowSquare> unopened = getUnopenedNotFlaggedSquares();
-        if (unopened.size() == 0){
+        if (unopened.isEmpty()) {
             return new Move(2, 2, Highlight.GREEN);
         }
         ShadowSquare sq = unopened.get(rng.nextInt(unopened.size()));
@@ -370,7 +373,7 @@ public class TiraBot implements Bot {
      *
      * @param x width
      * @param y height
-     * @return
+     * @return ShadowSquare type object
      */
     public ShadowSquare getSquare(int x, int y) {
         return this.shadowBoard[x][y];

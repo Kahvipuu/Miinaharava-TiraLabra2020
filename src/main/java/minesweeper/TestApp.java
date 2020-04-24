@@ -27,7 +27,7 @@ public class TestApp {
     public Bot bot = new TiraBot(10, 10);
 
     public TestApp(long seed, int width, int height, int mines) {
-        System.out.println("seed:" +seed);
+        System.out.println("seed:" + seed);
         board = new Board(new MinefieldGenerator(seed), width, height, mines);
         BlockingQueue<Move> moveQueue = new LinkedBlockingQueue<>();
         BotExecutor botExecutor = new BotExecutor(moveQueue, bot, board);
