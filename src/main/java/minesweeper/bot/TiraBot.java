@@ -28,7 +28,6 @@ public class TiraBot implements Bot {
     private Board realBoard;
     private GameStats gameStats;
     private int debugCounter = 0;
-    private boolean firstRandom;
 
     public TiraBot(int width, int height) {
         this.width = width;
@@ -40,7 +39,6 @@ public class TiraBot implements Bot {
         this.candidatesForNextMove = new ArrayDeque<>();
         this.initialize();
         addMoveToQueue(new Move(MoveType.OPEN, 2, 2));
-        firstRandom = true;
     }
 
     /**
@@ -329,15 +327,7 @@ public class TiraBot implements Bot {
      */
     protected Move getRandomMove() {
 
-        // debug
-        if (firstRandom = true) {
-            firstRandom = false;
-            return new Move(MoveType.OPEN, 11, 0);
-        }
-        // debug
-
-        ArrayList<ShadowSquare> unopened = new ArrayList<>();
-        unopened = getUnopenedNotFlaggedSquares();
+        ArrayList<ShadowSquare> unopened = getUnopenedNotFlaggedSquares();
         ShadowSquare sq = unopened.get(rng.nextInt(unopened.size()));
         System.out.println("random move sq:" + sq.getX() + ":" + sq.getY());
         return new Move(MoveType.OPEN, sq.getX(), sq.getY());
