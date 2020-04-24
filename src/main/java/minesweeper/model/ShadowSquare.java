@@ -14,6 +14,7 @@ public class ShadowSquare {
     private int surroundingNotKnown;
     private int locationX;
     private int locationY;
+    private int startingNeighbours;
 
     /**
      * Generates a new unopened Square with no mines or flag
@@ -29,9 +30,14 @@ public class ShadowSquare {
         this.surroundingMines = 15; // testing how to implement, not known before opening and should be changed only once
         this.surroundingUnknownMines = 15;
         this.surroundingFlags = 0;
+        this.startingNeighbours = neighbours;
         this.surroundingNotKnown = neighbours;
         this.locationX = x;
         this.locationY = y;
+    }
+
+    public int getStartingNeighbours() {
+        return startingNeighbours;
     }
 
     public void incrementSurroundingFlags() {

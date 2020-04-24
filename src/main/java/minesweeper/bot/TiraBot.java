@@ -7,7 +7,6 @@ package minesweeper.bot;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
 import minesweeper.model.Board;
 import minesweeper.model.GameStats;
@@ -15,7 +14,6 @@ import minesweeper.model.Move;
 import minesweeper.model.MoveType;
 import minesweeper.model.Highlight;
 import minesweeper.model.ShadowSquare;
-import minesweeper.model.Square;
 
 public class TiraBot implements Bot {
 
@@ -30,6 +28,7 @@ public class TiraBot implements Bot {
     private Board realBoard;
     private GameStats gameStats;
     private int debugCounter = 0;
+    private boolean firstRandom;
 
     public TiraBot(int width, int height) {
         this.width = width;
@@ -41,6 +40,7 @@ public class TiraBot implements Bot {
         this.candidatesForNextMove = new ArrayDeque<>();
         this.initialize();
         addMoveToQueue(new Move(MoveType.OPEN, 2, 2));
+        firstRandom = true;
     }
 
     /**
@@ -58,9 +58,10 @@ public class TiraBot implements Bot {
         processLastMove();
 
         //debug
-        ArrayList<Move> moves = getPossibleMoves(board);
-        System.out.println("count:" + debugCounter + " possible moves/unresolved squares:"
-                + moves.size() + " latestmove:" + latestMove.type +"-" + latestMove.x + ":" + latestMove.y);
+        ArrayList<ShadowSquare> moves = getUnopenedNotFlaggedSquares();
+        System.out.println("count:" + debugCounter
+                + " possible moves/unresolved squares:" + moves.size()
+                + " latestmove:" + latestMove.type + "-" + latestMove.x + ":" + latestMove.y);
         debugCounter++;
         //debug
         //
@@ -72,9 +73,15 @@ public class TiraBot implements Bot {
 
         decideNextMove();
         if (!nextMoves.isEmpty()) {
+            //debug
+            System.out.println("found something from candidates /next move not empty");
+
             latestMove = nextMoves.pollFirst();
             return latestMove;
         }
+
+        //debug
+        System.out.println("getting random move next");
 
         addMoveToQueue(getRandomMove());
         latestMove = nextMoves.pollFirst();
@@ -92,7 +99,7 @@ public class TiraBot implements Bot {
     @Override
     public ArrayList<Move> getPossibleMoves(Board board) {
         ArrayList<Move> moves = new ArrayList<>();
-        ArrayList<ShadowSquare> unresolved = getUnopenedSquares();
+        ArrayList<ShadowSquare> unresolved = getUnopenedNotFlaggedSquares();
         for (ShadowSquare square : unresolved) {
             moves.add(new Move(MoveType.OPEN, square.getX(), square.getY()));
         }
@@ -147,7 +154,7 @@ public class TiraBot implements Bot {
                 sq.setToFlagged();
                 this.nextMoves.addLast(move);
             }
-            if (move.type == MoveType.OPEN && !sq.isOpened()){
+            if (move.type == MoveType.OPEN && !sq.isOpened()) {
                 this.nextMoves.addLast(move);
             }
         }
@@ -199,10 +206,14 @@ public class TiraBot implements Bot {
         ArrayList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
 
         //debug
-        System.out.println("setSurroundingToFlags:" +sq.getX() +":" +sq.getY() +" unknown:"
-                +sq.getSurroundingNotKnown() +" surrFlags:" +sq.surroundingFlags() +" selfMines:" +sq.getNumberOfSurroundingMines());
+        System.out.println("setSurroundingToFlags:" + sq.getX() + ":" + sq.getY()
+                + " startNeighbours" + sq.getStartingNeighbours()
+                + " unknownsquares:" + sq.getSurroundingNotKnown()
+                + " unknownmines" + sq.getSurroundingUnknownMines()
+                + " surrFlags:" + sq.surroundingFlags()
+                + " selfMines:" + sq.getNumberOfSurroundingMines());
         //debug
-        
+
         for (int x = 0; x < surroundingSquares.size(); x++) {
             ShadowSquare surroundingSq = surroundingSquares.get(x);
             if (!surroundingSq.isResolved() && !surroundingSq.isOpened()) {
@@ -282,7 +293,7 @@ public class TiraBot implements Bot {
      */
     protected void resolveMoveTypeFlag(ShadowSquare sq) {
         ArrayList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
-        for (ShadowSquare surroundingSq: surroundingSquares) {
+        for (ShadowSquare surroundingSq : surroundingSquares) {
             if (!surroundingSq.isResolved()) {
                 surroundingSq.incrementSurroundingFlags();
                 candidatesForNextMove.add(surroundingSq);
@@ -317,10 +328,18 @@ public class TiraBot implements Bot {
      * @return gives random open -type move from list of unresolved squares
      */
     protected Move getRandomMove() {
-        ArrayList<ShadowSquare> unopened = getUnopenedSquares();
-        int size = unopened.size();
-        int random = rng.nextInt(size);
-        ShadowSquare sq = unopened.get(random);
+
+        // debug
+        if (firstRandom = true) {
+            firstRandom = false;
+            return new Move(MoveType.OPEN, 11, 0);
+        }
+        // debug
+
+        ArrayList<ShadowSquare> unopened = new ArrayList<>();
+        unopened = getUnopenedNotFlaggedSquares();
+        ShadowSquare sq = unopened.get(rng.nextInt(unopened.size()));
+        System.out.println("random move sq:" + sq.getX() + ":" + sq.getY());
         return new Move(MoveType.OPEN, sq.getX(), sq.getY());
     }
 
@@ -329,11 +348,11 @@ public class TiraBot implements Bot {
      *
      * @return ArrayList of squares
      */
-    public ArrayList<ShadowSquare> getUnopenedSquares() {
+    public ArrayList<ShadowSquare> getUnopenedNotFlaggedSquares() {
         ArrayList<ShadowSquare> unopenedSquares = new ArrayList<>();
         for (int x = 0; x < this.width; x++) {
             for (int y = 0; y < this.height; y++) {
-                if (!shadowBoard[x][y].isOpened()) {
+                if (!shadowBoard[x][y].isOpened() && !shadowBoard[x][y].isFlagged()) {
                     unopenedSquares.add(shadowBoard[x][y]);
                 }
             }
@@ -373,7 +392,21 @@ public class TiraBot implements Bot {
         for (int x = 0; x < this.width; x++) {
             for (int y = 0; y < this.height; y++) {
                 // givin borders and corners different neighbours
-                if (x == 0 || y == 0 || x == this.height - 1 || y == this.width - 1) {
+                if (x == 0 || y == 0 || x == this.width - 1 || y == this.height - 1) {
+                    //sides
+                    if (x == 0 && y > 0 && y < height - 1) {
+                        this.shadowBoard[x][y] = new ShadowSquare(x, y, 5);
+                    }
+                    if (x == width - 1 && y > 0 && y < height - 1) {
+                        this.shadowBoard[x][y] = new ShadowSquare(x, y, 5);
+                    }
+                    if (y == 0 && x > 0 && x < width - 1) {
+                        this.shadowBoard[x][y] = new ShadowSquare(x, y, 5);
+                    }
+                    if (y == height - 1 && x > 0 && x < width - 1) {
+                        this.shadowBoard[x][y] = new ShadowSquare(x, y, 5);
+                    }
+                    //corners
                     if (x == 0 && y == 0) {
                         this.shadowBoard[x][y] = new ShadowSquare(x, y, 3);
                     }
@@ -385,8 +418,6 @@ public class TiraBot implements Bot {
                     }
                     if (x == this.width - 1 && y == this.height - 1) {
                         this.shadowBoard[x][y] = new ShadowSquare(x, y, 3);
-                    } else {
-                        this.shadowBoard[x][y] = new ShadowSquare(x, y, 5);
                     }
                 } else {
                     this.shadowBoard[x][y] = new ShadowSquare(x, y, 8);
