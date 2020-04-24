@@ -66,28 +66,28 @@ public class ShadowSquareTest {
 
     @Test
     public void startingNeighboursAreCorrect() {
-        assertEquals(8, square8neighbours.surroundingNotKnown());
-        assertEquals(5, square5neighbours.surroundingNotKnown());
-        assertEquals(3, square3neighbours.surroundingNotKnown());
+        assertEquals(8, square8neighbours.getSurroundingNotKnown());
+        assertEquals(5, square5neighbours.getSurroundingNotKnown());
+        assertEquals(3, square3neighbours.getSurroundingNotKnown());
     }
 
     @Test
     public void incrementingFlagsDecreasesNotKnown() {
         square8neighbours.incrementSurroundingFlags();
-        assertEquals(7, square8neighbours.surroundingNotKnown());
+        assertEquals(7, square8neighbours.getSurroundingNotKnown());
     }
 
     @Test
     public void numberOfSurroundingMinesCanBeSet() {
         square8neighbours.setNumberOfSurroundingMines(5);
-        assertEquals(5, square8neighbours.surroundingMines());
+        assertEquals(5, square8neighbours.getSurroundingMines());
     }
 
     @Test
     public void numberOfSurroundingMinesCanNotBeChangedTwice() {
         square8neighbours.setNumberOfSurroundingMines(5);
         square8neighbours.setNumberOfSurroundingMines(4);
-        assertEquals(5, square8neighbours.surroundingMines());
+        assertEquals(5, square8neighbours.getSurroundingMines());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class ShadowSquareTest {
     @Test
     public void flaggingAlsoDecreasesNotKnown() {
         square8neighbours.incrementSurroundingFlags();
-        assertEquals(7, square8neighbours.surroundingNotKnown());
+        assertEquals(7, square8neighbours.getSurroundingNotKnown());
     }
 
 }

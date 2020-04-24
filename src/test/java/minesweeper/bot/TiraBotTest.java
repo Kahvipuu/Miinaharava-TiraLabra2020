@@ -101,7 +101,6 @@ public class TiraBotTest {
     
     /* list of what to test:
         public Move makeMove(Board board)
-        public ArrayList<Move> getPossibleMoves(Board board)
         public void setGameStats(GameStats gameStats)
         protected void decideNextMove()
         protected void addMoveToQueue(Move move)

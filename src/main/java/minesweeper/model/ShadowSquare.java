@@ -9,6 +9,7 @@ public class ShadowSquare {
     private boolean opened;
     private boolean isFlagged;
     private int surroundingMines; //Number of surrounding squares with mines
+    private int surroundingUnknownMines;
     private int surroundingFlags;
     private int surroundingNotKnown;
     private int locationX;
@@ -26,6 +27,7 @@ public class ShadowSquare {
         this.opened = false;
         this.isFlagged = false;
         this.surroundingMines = 15; // testing how to implement, not known before opening and should be changed only once
+        this.surroundingUnknownMines = 15;
         this.surroundingFlags = 0;
         this.surroundingNotKnown = neighbours;
         this.locationX = x;
@@ -35,6 +37,22 @@ public class ShadowSquare {
     public void incrementSurroundingFlags() {
         this.surroundingFlags++;
         this.surroundingNotKnown--;
+        if (surroundingMines != 15){
+            surroundingUnknownMines--;
+        }
+    }
+
+    /**
+     * sets number of surrounding mines to square, only changeable once when
+     * square is first opened
+     *
+     * @param mines number of mines surrounding the square
+     */
+    public void setNumberOfSurroundingMines(int mines) {
+        if (this.surroundingMines == 15) {
+            this.surroundingMines = mines;
+            this.surroundingUnknownMines = mines - surroundingFlags;
+        }
     }
 
     public void decreaseNotKnown() {
@@ -87,7 +105,7 @@ public class ShadowSquare {
     }
 
     /**
-     * set square to flagged, not reversable
+     * set square to flagged, not reversable also sets square to resolved
      */
     public void setToFlagged() {
         this.isFlagged = true;
@@ -112,13 +130,21 @@ public class ShadowSquare {
 
     /**
      * Number of surrounding Squares that have a mine.
-     *
+     * Squares "number"
      * @return The number of surrounding Squares that have a mine.
      */
-    public int surroundingMines() {
+    public int getSurroundingMines() {
         return this.surroundingMines;
     }
 
+    /**
+     * Getter for mines that have not been flagged yet
+     * @return int of still hidden mines
+     */
+    public int getSurroundingUnknownMines(){
+        return this.surroundingUnknownMines;
+    }
+    
     /**
      * returns number of flags surrounding the square
      *
@@ -133,20 +159,17 @@ public class ShadowSquare {
      *
      * @return int of surrounding squares program has no info of
      */
-    public int surroundingNotKnown() {
+    public int getSurroundingNotKnown() {
         return this.surroundingNotKnown;
     }
 
     /**
-     * sets number of surrounding mines to square, only changeable once when
-     * square is first opened
+     * returns number of surrounding mines, starting value set to 15
      *
-     * @param mines number of mines surrounding the square
+     * @return int of mines
      */
-    public void setNumberOfSurroundingMines(int mines) {
-        if (this.surroundingMines == 15) {
-            this.surroundingMines = mines;
-        }
+    public int getNumberOfSurroundingMines() {
+        return this.surroundingMines;
     }
 
     /**
