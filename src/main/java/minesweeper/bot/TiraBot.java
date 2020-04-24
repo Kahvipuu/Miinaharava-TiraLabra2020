@@ -82,7 +82,10 @@ public class TiraBot implements Bot {
     @Override
     public ArrayList<Move> getPossibleMoves(Board board) {
         ArrayList<Move> moves = new ArrayList<>();
-        moves.add(getRandomMove());
+        ArrayList<ShadowSquare> unresolved = getUnresolvedSquares();
+        for (ShadowSquare square : unresolved){
+            moves.add(new Move(MoveType.OPEN, square.getX(), square.getY()));
+        }
         return moves;
     }
 

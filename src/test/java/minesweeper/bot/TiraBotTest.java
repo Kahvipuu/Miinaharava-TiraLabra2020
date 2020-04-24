@@ -6,6 +6,7 @@ import minesweeper.generator.MinefieldGenerator;
 import minesweeper.model.Board;
 import minesweeper.model.GameStats;
 import minesweeper.model.MoveType;
+import minesweeper.model.ShadowSquare;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -37,19 +38,67 @@ public class TiraBotTest {
         assertTrue(move.type == MoveType.OPEN);
     }
 
-/* Tässä jotain vikaa, aika oleellinen joten pitäisi ehkä olla seuraava tarkastettava asia!!   
     @Test
     public void rightAmountOfPossibleMovesGiven() {
         ArrayList<Move> moves = this.tiraBot.getPossibleMoves(realBoard);
-        assertTrue(moves.size() == 100);
+        assertEquals(100, moves.size());
     }
-*/
     
     @Test
     public void gameStatsGiven() {
 
     }
 
+    @Test
+    public void surroundingSquaresReturnCorrectAmountCorner00(){
+        ShadowSquare sq = this.tiraBot.getSquare(0, 0);
+        ArrayList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        assertEquals(3, neighbours.size());        
+    }
+
+    @Test
+    public void surroundingSquaresReturnCorrectAmountCorner99(){
+        ShadowSquare sq = this.tiraBot.getSquare(9, 9);
+        ArrayList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        assertEquals(3, neighbours.size());        
+    }
+    
+    @Test
+    public void surroundingSquaresReturnCorrectAmountSide03(){
+        ShadowSquare sq = this.tiraBot.getSquare(0, 3);
+        ArrayList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        assertEquals(5, neighbours.size());        
+    }
+
+    @Test
+    public void surroundingSquaresReturnCorrectAmountSide30(){
+        ShadowSquare sq = this.tiraBot.getSquare(3, 0);
+        ArrayList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        assertEquals(5, neighbours.size());        
+    }
+
+    @Test
+    public void surroundingSquaresReturnCorrectAmountSide93(){
+        ShadowSquare sq = this.tiraBot.getSquare(9, 3);
+        ArrayList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        assertEquals(5, neighbours.size());        
+    }
+
+    @Test
+    public void surroundingSquaresReturnCorrectAmountSide39(){
+        ShadowSquare sq = this.tiraBot.getSquare(3, 9);
+        ArrayList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        assertEquals(5, neighbours.size());
+    }
+
+    @Test
+    public void surroundingSquaresReturnCorrectAmountMiddle33(){
+        ShadowSquare sq = this.tiraBot.getSquare(3, 3);
+        ArrayList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        assertEquals(8, neighbours.size());
+    }
+    
+    
     /* list of what to test:
         public Move makeMove(Board board)
         public ArrayList<Move> getPossibleMoves(Board board)
@@ -60,7 +109,6 @@ public class TiraBotTest {
         protected void setSurroundingToFlags(ShadowSquare sq)
         protected void resolveMoveTypeOpen(ShadowSquare sq)
         protected void setSurroundingOpenedSquaresToBeChecked(ShadowSquare sq)
-        protected ArrayList<ShadowSquare> getSurroundingSquares(ShadowSquare sq)
         protected void resolveMoveTypeFlag(ShadowSquare sq)
         protected void setNumberOfMines(ShadowSquare sq, int mines)
         protected Move getRandomMove()
