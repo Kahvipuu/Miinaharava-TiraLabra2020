@@ -1,4 +1,3 @@
-
 package minesweeper.model;
 
 import javafx.collections.ObservableList;
@@ -9,6 +8,7 @@ import java.util.concurrent.TimeUnit;
  * Class used for tracking game statistics
  */
 public class GameStats {
+
     public ObservableList<Move> moves;
     public double cumulativeEuclidianDistance = 0;
     public double cumulativeTime = 0;
@@ -50,6 +50,7 @@ public class GameStats {
      *
      * @param move1 Sequentially the first move
      * @param move2 Sequentially the second move
+     * @return double
      */
     public double deltaEuclideanDistance(Move move1, Move move2) {
         return Math.hypot(move2.x - move1.x, move2.y - move1.y);

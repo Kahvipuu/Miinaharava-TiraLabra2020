@@ -214,7 +214,7 @@ public class StartSelectView {
     /**
      * Return the ObservableList of the root node of this class, used for resizing
      * purposes in the App class
-     * @return 
+     * @return ObservableList
      */
     public ObservableList<Node> rootChildren() {
         return this.stackPane.getChildren();
@@ -222,7 +222,7 @@ public class StartSelectView {
 
     /**
      * Returns the underlying StackPane on which the rest of the elements are added.
-     * @return 
+     * @return StackPane
      */
     public StackPane get() {
         return this.stackPane;

@@ -13,7 +13,7 @@ kesken
 -	[Toteutusdokumentti](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/toteutus.md)
 
 ### Testausdokumentti
-kesken
+kesken, testausta javan tietorakenteilla
 -	[Testausdokumentti](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/testaus.md)
 
 ### Viikkoraportit

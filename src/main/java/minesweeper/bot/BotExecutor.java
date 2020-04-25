@@ -23,12 +23,15 @@ public class BotExecutor extends Thread {
     @Override
     public void run() {
         //Run bot while game has not ended
-        while (!this.board.gameLost || !this.board.gameWon) {
+        while (!this.board.gameLost) {
             // Try to add new move from bot to queue
             // Bot makes moves to its own board and then the move is added to the supply queue
             Move move = this.bot.makeMove(this.board);
             this.queue.offer(move);
             this.board.makeMove(move);
+            if (this.board.gameWon){
+                break;
+            }
         }
     }
 

@@ -29,6 +29,7 @@ import minesweeper.model.Move;
 import minesweeper.model.Square;
 
 public class GameView {
+
     private GridPane gameGP;
     private Board board;
     private Board botBoard;
@@ -55,6 +56,11 @@ public class GameView {
     /**
      * Constructor for a game view of given size and mine count Seed for the
      * minefield is generated from system's time
+     *
+     * @param x width
+     * @param y height
+     * @param vbox view
+     * @param mines mines
      */
     public GameView(int x, int y, VBox vbox, int mines) {
         this(x, y, vbox, mines, System.nanoTime() / 2L);
@@ -62,6 +68,12 @@ public class GameView {
 
     /**
      * Base constructor for GameView with given size, mine count and seed
+     *
+     * @param x width
+     * @param y height
+     * @param vbox view
+     * @param mines mines
+     * @param seed seed
      */
     public GameView(int x, int y, VBox vbox, int mines, long seed) {
         MinefieldGenerator generator;
@@ -69,7 +81,7 @@ public class GameView {
         sizeX = x;
         int sizeY = y;
         this.buttonGrid = new Button[x][y];
-       
+
         if (x < 11 && y < 11) {
             buttonSize = 45;
         } else if (x < 17 && y < 17) {
@@ -91,7 +103,7 @@ public class GameView {
             for (Move move : helperMoves) {
                 board.makeMove(move);
                 stats.update(move);
-          
+
                 if (!board.gameLost || board.gameWon) {
                     botGame.setDisable(true);
                     this.updateGameGP(move.x, move.y);
@@ -131,7 +143,7 @@ public class GameView {
         statsButton.setOnMouseClicked(e -> {
             new StatsView(this.stats);
         });
-       
+
         timerLabel.getStyleClass().add("label-subheader");
 
         newGame.getStyleClass().add("menu-button");
@@ -185,11 +197,10 @@ public class GameView {
         // NOTE: This variable is an array for interior mutability, variables passed into
         // AnimationTimers need to be final (for concurrency) but we need to be able to mutate
         // this one
-
         timer = new AnimationTimer() {
             public void handle(long currentNanoTime) {
                 // Time that has passed since last update
-              
+
                 long deltaTime = TimeUnit.MILLISECONDS.convert(currentNanoTime - timerPreviousTime[0],
                         TimeUnit.NANOSECONDS);
 
@@ -197,7 +208,6 @@ public class GameView {
 
                 time += deltaTime;
                 timerLabel.setText("Time: " + TimeUnit.SECONDS.convert(time, TimeUnit.MILLISECONDS));
-                
 
                 // Kills the timer update routine if the game has ended
                 if (board.gameLost || board.gameWon) {
@@ -210,14 +220,21 @@ public class GameView {
 
     /**
      * Returns a VBox with the view including a GridPane with the gamestate
+     *
+     * @return view
      */
     public VBox getView() {
         return this.vbox;
     }
 
     /**
-     * Builds a new button with the required functionality for flagging and opening
-     * squares
+     * Builds a new button with the required functionality for flagging and
+     * opening squares
+     *@param button button
+     *@param size size
+     *@param x width
+     *@param y height
+     *@return button
      */
     public Button buildButton(Button button, int size, int x, int y) {
         button.setMinWidth(size);
@@ -227,7 +244,7 @@ public class GameView {
         button.getStyleClass().add("unopened-button");
         // Some Window managers and/or distros seem to shortcut right + left as middle mouse. 
         button.setOnMousePressed((e) -> {
-            if (e.getButton() == MouseButton.PRIMARY || e.getButton() == MouseButton.MIDDLE) { 
+            if (e.getButton() == MouseButton.PRIMARY || e.getButton() == MouseButton.MIDDLE) {
                 this.leftClick.set(true);
             }
             if (e.getButton() == MouseButton.SECONDARY || e.getButton() == MouseButton.MIDDLE) {
@@ -239,7 +256,7 @@ public class GameView {
             timer.start();
         });
         button.setOnMouseReleased((e) -> {
-            if (e.getButton() == MouseButton.PRIMARY || e.getButton() == MouseButton.MIDDLE) { 
+            if (e.getButton() == MouseButton.PRIMARY || e.getButton() == MouseButton.MIDDLE) {
                 this.leftClick.set(false);
             }
             if (e.getButton() == MouseButton.SECONDARY || e.getButton() == MouseButton.MIDDLE) {
@@ -252,6 +269,7 @@ public class GameView {
         });
         return button;
     }
+
     /**
      * Helper method for button clicking
      */
@@ -299,13 +317,14 @@ public class GameView {
             this.endLabel.setText("You lost.");
             this.endLabel.getStyleClass().add("label-failure");
             this.timerLabel.getStyleClass().add("label-failure");
-            
+
         }
         this.disableAllButtons();
     }
 
     /**
      * Update the given X,Y coordinate of the game board
+     *
      * @param x The X coordinate
      * @param y the Y coordinate
      */
@@ -344,7 +363,7 @@ public class GameView {
                     styleToAdd.add("custom-label-tiny");
                 } else if (buttonSize < 25) {
                     styleToAdd.add("custom-label-small");
-                } 
+                }
             }
         } else {
             if (board.board[x][y].isFlagged()) {
@@ -389,10 +408,9 @@ public class GameView {
     }
 
     /**
-     * This method is called when user presses the bot game button.
-     * It creates BotExecutor thread and connects to it via a Queue,
-     * and initializes a new AnimationTimer to update the GUI based
-     * on the bot moves.
+     * This method is called when user presses the bot game button. It creates
+     * BotExecutor thread and connects to it via a Queue, and initializes a new
+     * AnimationTimer to update the GUI based on the bot moves.
      */
     private void botGameLoop() {
         this.botButton.setDisable(true);
@@ -433,8 +451,9 @@ public class GameView {
     }
 
     /**
-     * Determines the Button style class to be used based on
-     * the number of adjacent mines.
+     * Determines the Button style class to be used based on the number of
+     * adjacent mines.
+     *
      * @param button The Button to be updated
      * @param mines The number of mines in
      * @return The CSS style class for this button
@@ -447,8 +466,9 @@ public class GameView {
 
     // Used by the gui updater timer to updat the board of the gui
     /**
-     * Updater function for the GUI when running a bot game
-     * Called by the AnimationTimer in botGameLoop()
+     * Updater function for the GUI when running a bot game Called by the
+     * AnimationTimer in botGameLoop()
+     *
      * @param moveQueue The queue to which the bot will place its moves
      * @param board The current board for the GUI
      */
@@ -473,8 +493,9 @@ public class GameView {
     }
 
     /**
-     * Initializes the Animation Speed slider for bot games from a StorageSingleton
-     * This way the slider speed will persist between multiple games
+     * Initializes the Animation Speed slider for bot games from a
+     * StorageSingleton This way the slider speed will persist between multiple
+     * games
      */
     private void initializeSlider() {
         this.animationSlider = new Slider(100, 2000, StorageSingleton.getInstance().animationSpeed);

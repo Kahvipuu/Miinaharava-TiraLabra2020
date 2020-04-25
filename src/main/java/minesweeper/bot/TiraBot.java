@@ -330,12 +330,18 @@ public class TiraBot implements Bot {
      */
     protected Move getRandomMove() {
         if (realBoard.gameWon || realBoard.gameLost) {
-            return new Move(2, 2, Highlight.GREEN);
+            System.out.println("game won/lost");
+            return new Move(MoveType.OPEN, 2, 2);
         }
+
         ArrayList<ShadowSquare> unopened = getUnopenedNotFlaggedSquares();
-        ShadowSquare sq = unopened.get(rng.nextInt(unopened.size()));
-        System.out.println("random move sq:" + sq.getX() + ":" + sq.getY());
-        return new Move(MoveType.OPEN, sq.getX(), sq.getY());
+        if (!unopened.isEmpty()) {
+            ShadowSquare sq = unopened.get(rng.nextInt(unopened.size()));
+            System.out.println("random move sq:" + sq.getX() + ":" + sq.getY());
+            return new Move(MoveType.OPEN, sq.getX(), sq.getY());
+        }
+        System.out.println("green random highlight changed to starting move..");
+        return new Move(MoveType.OPEN, 2, 2);
     }
 
     /**
