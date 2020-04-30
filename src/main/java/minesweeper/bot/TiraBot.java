@@ -88,7 +88,7 @@ public class TiraBot implements Bot {
 
     /**
      * method used by main program, I just give arraylist of unopened squares
-     * This was propably used to give hints to player, I'am not implementing
+     * This was probably used to give hints to player, I'am not implementing
      * that
      *
      * @param board real board used by main program
@@ -237,7 +237,7 @@ public class TiraBot implements Bot {
             for (ShadowSquare surroundingSq : surroundingSquares) {
                 if (!surroundingSq.isResolved()) {
                     surroundingSq.decreaseNotKnown();
-                    candidatesForNextMove.add(surroundingSq);
+                    candidatesForNextMove.addLast(surroundingSq);
                 }
             }
         }
@@ -267,19 +267,18 @@ public class TiraBot implements Bot {
      * @return ArrayList of neighbouring ShadowSquares
      */
     protected ArrayList<ShadowSquare> getSurroundingSquares(ShadowSquare sq) {
-        int x = sq.getX();
-        int y = sq.getY();
+        int squarex = sq.getX();
+        int squarey = sq.getY();
         ArrayList<ShadowSquare> surroundingSquares = new ArrayList<>();
-        for (int xx = -1; xx < 2; xx++) {
-            for (int yy = -1; yy < 2; yy++) {
-                int xxx = xx + x;
-                int yyy = yy + y;
-                if (xxx >= 0 && xxx < this.width && yyy >= 0 && yyy < this.height) {
-                    if (xx == 0 && yy == 0) {
+        for (int widthModifier = -1; widthModifier < 2; widthModifier++) {
+            for (int heightModifier = -1; heightModifier < 2; heightModifier++) {
+                int neighbourX = widthModifier + squarex;
+                int neighbourY = heightModifier + squarey;
+                if (neighbourX >= 0 && neighbourX < this.width && neighbourY >= 0 && neighbourY < this.height) {
+                    if (widthModifier == 0 && heightModifier == 0) {
                         continue;
                     }
-                    surroundingSquares.add(this.shadowBoard[xxx][yyy]);
-                    //mildly ugly, should be cleaned if I get a better idea
+                    surroundingSquares.add(this.shadowBoard[neighbourX][neighbourY]);
                 }
             }
         }
@@ -297,7 +296,7 @@ public class TiraBot implements Bot {
         for (ShadowSquare surroundingSq : surroundingSquares) {
             if (!surroundingSq.isResolved()) {
                 surroundingSq.incrementSurroundingFlags();
-                candidatesForNextMove.add(surroundingSq);
+                candidatesForNextMove.addLast(surroundingSq);
             }
         }
     }
