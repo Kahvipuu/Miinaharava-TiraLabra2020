@@ -29,6 +29,10 @@ public class TiraList<T> {
     public T pollFirst() {
         T polled = (T) list[startIndex];
         startIndex++;
+        if (startIndex == nextindex) {
+            startIndex = 0;
+            nextindex = 0;
+        }
         return polled;
     }
 
@@ -64,6 +68,8 @@ public class TiraList<T> {
         }
         list[nextindex] = item;
         nextindex++;
+        //debug
+        System.out.println("item added and size:" + size());
     }
 
     /**
@@ -83,15 +89,25 @@ public class TiraList<T> {
      */
     public boolean contains(T item) {
         int listSize = size();
+        //debug
+        System.out.println("contains listSize:" + listSize);
+
+        if (listSize == 0) {
+            return false;
+        }
+
         if (item.getClass() == ShadowSquare.class) {
-            ShadowSquare givensq = (ShadowSquare) item;
+            ShadowSquare givenSQ = (ShadowSquare) item;
             for (int i = 0; i < listSize; i++) {
-                ShadowSquare listSQ = (ShadowSquare) list[i + startIndex];
-                if (listSQ.getX() == givensq.getX() && listSQ.getY() == givensq.getY()) {
+                ShadowSquare listSQ = (ShadowSquare) list[startIndex + i];
+                int givenSQX = givenSQ.getX();
+                int listSQX = listSQ.getX();
+                if (listSQ.getX() == givenSQ.getX() && listSQ.getY() == givenSQ.getY()) {
                     return true;
                 }
             }
         }
+
         for (int i = 0; i < listSize; i++) {
             if (list[i + startIndex].equals(item)) {
                 return true;
@@ -105,20 +121,21 @@ public class TiraList<T> {
      * enough then just rearranges them
      */
     private void resize() {
-        int listSize = nextindex - startIndex;
+        int listSize = size();
+        System.out.println("resize size:" + listSize);
         if (listSize <= list.length / 2) {
             for (int i = 0; i < listSize; i++) {
                 list[i] = list[startIndex + i];
             }
-        }
-
-        for (int i = 0; i < listSize; i++) {
+        } else {
             Object[] newList = new Object[this.list.length * 2];
-            newList[i] = list[i + startIndex];
+            for (int i = 0; i < listSize; i++) {
+                newList[i] = list[i + startIndex];
+                System.out.println("After resize, size:" + size() + " / " + list.length);
+            }
             this.list = newList;
         }
-
-        nextindex -= startIndex;
+        nextindex = nextindex - startIndex;
         startIndex = 0;
     }
 

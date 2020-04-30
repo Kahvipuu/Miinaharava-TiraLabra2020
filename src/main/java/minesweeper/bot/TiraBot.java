@@ -14,12 +14,13 @@ import minesweeper.model.Move;
 import minesweeper.model.MoveType;
 import minesweeper.model.Highlight;
 import minesweeper.model.ShadowSquare;
+import minesweeper.util.TiraList;
 
 public class TiraBot implements Bot {
 
-    private ArrayDeque<Move> nextMoves;
-    private ArrayDeque<ShadowSquare> nextAlreadyOpenedSquaresToCheck;
-    private ArrayDeque<ShadowSquare> candidatesForNextMove;
+    private TiraList<Move> nextMoves;
+    private TiraList<ShadowSquare> nextAlreadyOpenedSquaresToCheck;
+    private TiraList<ShadowSquare> candidatesForNextMove;
     private Move latestMove;
     private Random rng = new Random();
     private ShadowSquare[][] shadowBoard;
@@ -32,11 +33,11 @@ public class TiraBot implements Bot {
     public TiraBot(int width, int height) {
         this.width = width;
         this.height = height;
-        this.nextMoves = new ArrayDeque<>();
+        this.nextMoves = new TiraList<>();
         this.latestMove = new Move(0, 0, Highlight.NONE);
         this.shadowBoard = new ShadowSquare[width][height];
-        this.nextAlreadyOpenedSquaresToCheck = new ArrayDeque<>();
-        this.candidatesForNextMove = new ArrayDeque<>();
+        this.nextAlreadyOpenedSquaresToCheck = new TiraList<>();
+        this.candidatesForNextMove = new TiraList<>();
         this.initialize();
         addMoveToQueue(new Move(MoveType.OPEN, 2, 2));
     }
@@ -430,7 +431,7 @@ public class TiraBot implements Bot {
      *
      * @return normal getter
      */
-    public ArrayDeque<Move> getNextMoves() {
+    public TiraList<Move> getNextMoves() {
         return nextMoves;
     }
 
@@ -438,7 +439,7 @@ public class TiraBot implements Bot {
      *
      * @return normal getter
      */
-    public ArrayDeque<ShadowSquare> getNextAlreadyOpenedSquaresToCheck() {
+    public TiraList<ShadowSquare> getNextAlreadyOpenedSquaresToCheck() {
         return nextAlreadyOpenedSquaresToCheck;
     }
 
@@ -446,7 +447,7 @@ public class TiraBot implements Bot {
      *
      * @return normal getter
      */
-    public ArrayDeque<ShadowSquare> getCandidatesForNextMove() {
+    public TiraList<ShadowSquare> getCandidatesForNextMove() {
         return candidatesForNextMove;
     }
 
