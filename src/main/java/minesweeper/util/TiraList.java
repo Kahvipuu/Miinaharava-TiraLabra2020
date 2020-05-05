@@ -62,6 +62,7 @@ public class TiraList<T> {
 
     /**
      * returns list item with given index, if out of bounds then returns null
+     *
      * @param index is list index of a object
      * @return list item
      */
@@ -92,8 +93,6 @@ public class TiraList<T> {
         }
         list[nextindex] = item;
         nextindex++;
-        //debug
-        System.out.println("item Added, nextI/length&items:" + nextindex + "/" + list.length + " items:" + numItemInList());
     }
 
     /**
@@ -113,9 +112,6 @@ public class TiraList<T> {
      */
     public boolean contains(T item) {
         int listSize = numItemInList();
-        //debug
-        System.out.println("contains listSize:" + listSize);
-
         if (listSize == 0) {
             return false;
         }
@@ -124,8 +120,6 @@ public class TiraList<T> {
             ShadowSquare givenSQ = (ShadowSquare) item;
             for (int i = 0; i < listSize; i++) {
                 ShadowSquare listSQ = (ShadowSquare) list[startIndex + i];
-                int givenSQX = givenSQ.getX();
-                int listSQX = listSQ.getX();
                 if (listSQ.getX() == givenSQ.getX() && listSQ.getY() == givenSQ.getY()) {
                     return true;
                 }

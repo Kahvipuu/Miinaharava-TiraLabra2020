@@ -158,7 +158,7 @@ public class ShadowSquare {
      *
      * @return int of surrounding flags
      */
-    public int surroundingFlags() {
+    public int getSurroundingFlags() {
         return this.surroundingFlags;
     }
 

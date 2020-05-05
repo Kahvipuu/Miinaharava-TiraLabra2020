@@ -53,49 +53,49 @@ public class TiraBotTest {
     @Test
     public void surroundingSquaresReturnCorrectAmountCorner00(){
         ShadowSquare sq = this.tiraBot.getSquare(0, 0);
-        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingUnresolvedSquares(sq);
         assertEquals(3, neighbours.length());        
     }
 
     @Test
     public void surroundingSquaresReturnCorrectAmountCorner99(){
         ShadowSquare sq = this.tiraBot.getSquare(9, 9);
-        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingUnresolvedSquares(sq);
         assertEquals(3, neighbours.length());        
     }
     
     @Test
     public void surroundingSquaresReturnCorrectAmountSide03(){
         ShadowSquare sq = this.tiraBot.getSquare(0, 3);
-        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingUnresolvedSquares(sq);
         assertEquals(5, neighbours.length());        
     }
 
     @Test
     public void surroundingSquaresReturnCorrectAmountSide30(){
         ShadowSquare sq = this.tiraBot.getSquare(3, 0);
-        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingUnresolvedSquares(sq);
         assertEquals(5, neighbours.length());        
     }
 
     @Test
     public void surroundingSquaresReturnCorrectAmountSide93(){
         ShadowSquare sq = this.tiraBot.getSquare(9, 3);
-        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingUnresolvedSquares(sq);
         assertEquals(5, neighbours.length());        
     }
 
     @Test
     public void surroundingSquaresReturnCorrectAmountSide39(){
         ShadowSquare sq = this.tiraBot.getSquare(3, 9);
-        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingUnresolvedSquares(sq);
         assertEquals(5, neighbours.length());
     }
 
     @Test
     public void surroundingSquaresReturnCorrectAmountMiddle33(){
         ShadowSquare sq = this.tiraBot.getSquare(3, 3);
-        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingSquares(sq);
+        TiraList<ShadowSquare> neighbours = this.tiraBot.getSurroundingUnresolvedSquares(sq);
         assertEquals(8, neighbours.length());
     }
     

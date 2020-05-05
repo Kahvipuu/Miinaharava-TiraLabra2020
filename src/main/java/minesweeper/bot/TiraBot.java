@@ -23,6 +23,7 @@ public class TiraBot implements Bot {
     private TiraList<ShadowSquare> nextAlreadyOpenedSquaresToCheck;
     private TiraList<ShadowSquare> candidatesForNextMove;
     private Move latestMove;
+    // rng should be implemented, prio last, usage doesn't really affect bot
     private Random rng = new Random();
     private ShadowSquare[][] shadowBoard;
     private int width;
@@ -62,9 +63,9 @@ public class TiraBot implements Bot {
         processLastMove();
 
         //debug
-        TiraList<ShadowSquare> moves = getUnopenedNotFlaggedSquares();
+        //sloooow.. TiraList<ShadowSquare> moves = getUnopenedNotFlaggedSquares();
         System.out.println("count:" + debugCounter
-                + " possible moves/unresolved squares:" + moves.length()
+                + " possible moves/unresolved squares:" // + moves.length()
                 + " latestmove:" + latestMove.type + "-" + latestMove.x + ":" + latestMove.y
                 + " time:" + (latestTime - startTime));
         debugCounter++;
@@ -132,15 +133,31 @@ public class TiraBot implements Bot {
     protected void decideNextMove() {
         while (!candidatesForNextMove.isEmpty()) {
             ShadowSquare squareToEvaluate = candidatesForNextMove.pollFirst();
+            //debug
+            System.out.println("decide next:" + squareToEvaluate.getX() + ":"
+                    + squareToEvaluate.getY()
+                    + " surrF:" + squareToEvaluate.getSurroundingFlags()
+                    + " surrM:" + squareToEvaluate.getNumberOfSurroundingMines());
             if (squareToEvaluate.isResolved()) {
                 continue;
             }
-            if (squareToEvaluate.surroundingFlags() == squareToEvaluate.getSurroundingMines()) {
+            if (squareToEvaluate.getSurroundingFlags() == squareToEvaluate.getSurroundingMines()) {
                 addMoveToQueue(new Move(MoveType.CHORD, squareToEvaluate.getX(), squareToEvaluate.getY()));
-                continue;
+                System.out.println("chord");
+                break;
             }
+
             if (squareToEvaluate.getSurroundingNotKnown() == squareToEvaluate.getSurroundingUnknownMines()) {
                 setSurroundingToFlags(squareToEvaluate);
+                System.out.println("surrToFlag");
+                break;
+            }
+            if (squareToEvaluate.getSurroundingMines() == 2 && squareToEvaluate.getSurroundingFlags() == 0) {
+                System.out.println("if 2");
+                if (checkSquaresTwoMineStatus(squareToEvaluate)) {
+                    break;
+                }
+
             }
         }
     }
@@ -214,14 +231,14 @@ public class TiraBot implements Bot {
      * @param sq shadowsquare you want to surround with flags
      */
     protected void setSurroundingToFlags(ShadowSquare sq) {
-        TiraList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
+        TiraList<ShadowSquare> surroundingSquares = getSurroundingUnresolvedSquares(sq);
 
         //debug
         System.out.println("setSurroundingToFlags:" + sq.getX() + ":" + sq.getY()
                 + " startNeighbours" + sq.getStartingNeighbours()
                 + " unknownsquares:" + sq.getSurroundingNotKnown()
                 + " unknownmines" + sq.getSurroundingUnknownMines()
-                + " surrFlags:" + sq.surroundingFlags()
+                + " surrFlags:" + sq.getSurroundingFlags()
                 + " selfMines:" + sq.getNumberOfSurroundingMines());
         //debug
 
@@ -244,7 +261,7 @@ public class TiraBot implements Bot {
         if (!sq.isOpened()) {
             sq.setToOpened();
 
-            TiraList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
+            TiraList<ShadowSquare> surroundingSquares = getSurroundingUnresolvedSquares(sq);
             for (int i = 0; i < surroundingSquares.length(); i++) {
                 ShadowSquare surroundingSq = surroundingSquares.get(i);
                 if (!surroundingSq.isResolved()) {
@@ -264,7 +281,7 @@ public class TiraBot implements Bot {
      * @param sq square that was opened with chord or contains zero mines
      */
     protected void setSurroundingOpenedSquaresToBeChecked(ShadowSquare sq) {
-        TiraList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
+        TiraList<ShadowSquare> surroundingSquares = getSurroundingUnresolvedSquares(sq);
         for (int i = 0; i < surroundingSquares.length(); i++) {
             ShadowSquare surroundingSq = surroundingSquares.get(i);
             if (!surroundingSq.isResolved() && !nextAlreadyOpenedSquaresToCheck.contains(surroundingSq)) {
@@ -274,13 +291,12 @@ public class TiraBot implements Bot {
     }
 
     /**
-     * returns TiraList of squares surrounding given square, uglyish code that I
-     * didn't want to repeat in multiple places
+     * returns TiraList of unresolved squares surrounding given square
      *
      * @param sq returns neighbours of this ShadowSquare as TiraList
      * @return TiraList of neighbouring ShadowSquares
      */
-    protected TiraList<ShadowSquare> getSurroundingSquares(ShadowSquare sq) {
+    protected TiraList<ShadowSquare> getSurroundingUnresolvedSquares(ShadowSquare sq) {
         int squarex = sq.getX();
         int squarey = sq.getY();
         TiraList<ShadowSquare> surroundingSquares = new TiraList<>();
@@ -292,11 +308,87 @@ public class TiraBot implements Bot {
                     if (widthModifier == 0 && heightModifier == 0) {
                         continue;
                     }
-                    surroundingSquares.add(this.shadowBoard[neighbourX][neighbourY]);
+                    if (!this.shadowBoard[neighbourX][neighbourY].isResolved()) {
+                        surroundingSquares.add(this.shadowBoard[neighbourX][neighbourY]);
+                    }
                 }
             }
         }
         return surroundingSquares;
+    }
+
+    /**
+     * return TiraList of unopened squares surrounding given square
+     *
+     * @param sq ShadowSquare you want neighbours of
+     * @return TiraList of ShadowSquares
+     */
+    protected TiraList<ShadowSquare> getSurroundingUnopenedSquares(ShadowSquare sq) {
+        int squarex = sq.getX();
+        int squarey = sq.getY();
+        TiraList<ShadowSquare> surroundingUnopenedSquares = new TiraList<>();
+        for (int widthModifier = -1; widthModifier < 2; widthModifier++) {
+            for (int heightModifier = -1; heightModifier < 2; heightModifier++) {
+                int neighbourX = widthModifier + squarex;
+                int neighbourY = heightModifier + squarey;
+                if (neighbourX >= 0 && neighbourX < this.width && neighbourY >= 0 && neighbourY < this.height) {
+                    if (widthModifier == 0 && heightModifier == 0) {
+                        continue;
+                    }
+                    if (!this.shadowBoard[neighbourX][neighbourY].isOpened()) {
+                        surroundingUnopenedSquares.add(this.shadowBoard[neighbourX][neighbourY]);
+                    }
+                }
+            }
+        }
+        return surroundingUnopenedSquares;
+    }
+
+    /**
+     * gives a list of common unopened neighbours of to ShadowSquares
+     *
+     * @param self ShadowSquare
+     * @param other ShadowSquare
+     * @return TiraList of ShadowSquares
+     */
+    protected TiraList<ShadowSquare> getCommonNeighbours(ShadowSquare self, ShadowSquare other) {
+        TiraList<ShadowSquare> selfUnopenedNeigbours = getSurroundingUnopenedSquares(self);
+        TiraList<ShadowSquare> otherUnopenedNeigbours = getSurroundingUnopenedSquares(other);
+        TiraList<ShadowSquare> commonNeighbours = new TiraList<>();
+        for (int i = 0; i < selfUnopenedNeigbours.length(); i++) {
+            if (otherUnopenedNeigbours.contains(selfUnopenedNeigbours.get(i))) {
+                commonNeighbours.add(selfUnopenedNeigbours.get(i));
+            }
+        }
+        return commonNeighbours;
+    }
+
+    /**
+     * return TiraList of unopened and unresolved squares surrounding given
+     * square
+     *
+     * @param sq ShadowSquare you want neighbours of
+     * @return TiraList of ShadowSquares
+     */
+    protected TiraList<ShadowSquare> getSurroundingUnresolvedAndUnopenedSquares(ShadowSquare sq) {
+        int squarex = sq.getX();
+        int squarey = sq.getY();
+        TiraList<ShadowSquare> surroundingUnopenedSquares = new TiraList<>();
+        for (int widthModifier = -1; widthModifier < 2; widthModifier++) {
+            for (int heightModifier = -1; heightModifier < 2; heightModifier++) {
+                int neighbourX = widthModifier + squarex;
+                int neighbourY = heightModifier + squarey;
+                if (neighbourX >= 0 && neighbourX < this.width && neighbourY >= 0 && neighbourY < this.height) {
+                    if (widthModifier == 0 && heightModifier == 0) {
+                        continue;
+                    }
+                    if (this.shadowBoard[neighbourX][neighbourY].isOpened() && !this.shadowBoard[neighbourX][neighbourY].isResolved()) {
+                        surroundingUnopenedSquares.add(this.shadowBoard[neighbourX][neighbourY]);
+                    }
+                }
+            }
+        }
+        return surroundingUnopenedSquares;
     }
 
     /**
@@ -306,7 +398,7 @@ public class TiraBot implements Bot {
      * @param sq ShadowSquare that was flagged
      */
     protected void resolveMoveTypeFlag(ShadowSquare sq) {
-        TiraList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
+        TiraList<ShadowSquare> surroundingSquares = getSurroundingUnresolvedSquares(sq);
         for (int i = 0; i < surroundingSquares.length(); i++) {
             ShadowSquare surroundingSq = surroundingSquares.get(i);
             if (!surroundingSq.isResolved()) {
@@ -351,9 +443,11 @@ public class TiraBot implements Bot {
         TiraList<ShadowSquare> unopened = getUnopenedNotFlaggedSquares();
         if (!unopened.isEmpty()) {
             ShadowSquare sq = unopened.get(rng.nextInt(unopened.length()));
+            //debug
             System.out.println("random move sq:" + sq.getX() + ":" + sq.getY());
             return new Move(MoveType.OPEN, sq.getX(), sq.getY());
         }
+        //debug
         System.out.println("green random highlight changed to starting move..");
         return new Move(MoveType.OPEN, 2, 2);
     }
@@ -381,7 +475,7 @@ public class TiraBot implements Bot {
      * anything.. to be deleted if use is not found..
      */
     protected void setSurroundingSquaresToResolved(ShadowSquare sq) {
-        TiraList<ShadowSquare> surroundingSquares = getSurroundingSquares(sq);
+        TiraList<ShadowSquare> surroundingSquares = getSurroundingUnresolvedSquares(sq);
         for (int x = 0; x < surroundingSquares.length(); x++) {
             ShadowSquare surroundingSq = surroundingSquares.get(x);
             surroundingSq.setToResolved();
@@ -479,6 +573,44 @@ public class TiraBot implements Bot {
      */
     public ShadowSquare[][] getShadowBoard() {
         return shadowBoard;
+    }
+
+    private boolean checkSquaresTwoMineStatus(ShadowSquare squareToEvaluate) {
+        TiraList<ShadowSquare> surroundingSq = getSurroundingUnresolvedSquares(squareToEvaluate);
+        if (surroundingSq.length() == 5) {
+            TiraList<ShadowSquare> opened = new TiraList<>();
+            TiraList<ShadowSquare> unopened = new TiraList<>();
+            for (int i = 0; i < surroundingSq.length(); i++) {
+                ShadowSquare sq = surroundingSq.get(i);
+                if (sq.isOpened()) {
+                    if (sq.getSurroundingUnknownMines() == 1) {
+                        opened.add(sq);
+                    }
+                }
+                if (!sq.isOpened()) {
+                    unopened.add(sq);
+                }
+            }
+            if (opened.length() == 2 && unopened.length() == 3) {
+                int x = unopened.get(0).getX();
+                int y = unopened.get(0).getY();
+                if (x == unopened.get(1).getX() && x == unopened.get(2).getX() && opened.get(0).getX() == opened.get(1).getX()) {
+                    y = squareToEvaluate.getY();
+                    addMoveToQueue(new Move(MoveType.OPEN, x, y));
+                    addMoveToQueue(new Move(MoveType.FLAG, x, y + 1));
+                    addMoveToQueue(new Move(MoveType.FLAG, x, y - 1));
+                    return true;
+                }
+                if (y == unopened.get(1).getY() && y == unopened.get(2).getY() && opened.get(0).getY() == opened.get(1).getY()) {
+                    x = squareToEvaluate.getX();
+                    addMoveToQueue(new Move(MoveType.OPEN, x, y));
+                    addMoveToQueue(new Move(MoveType.FLAG, x + 1, y));
+                    addMoveToQueue(new Move(MoveType.FLAG, x - 1, y));
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
