@@ -27,13 +27,16 @@ public class TiraList<T> {
      * @return list item
      */
     public T pollFirst() {
-        T polled = (T) list[startIndex];
-        startIndex++;
-        if (startIndex == nextindex) {
-            startIndex = 0;
-            nextindex = 0;
+        if (!isEmpty()) {
+            T polled = (T) list[startIndex];
+            startIndex++;
+            if (isEmpty()) {
+                startIndex = 0;
+                nextindex = 0;
+            }
+            return polled;
         }
-        return polled;
+        return null;
     }
 
     /**
@@ -46,6 +49,27 @@ public class TiraList<T> {
             return true;
         }
         return false;
+    }
+
+    /**
+     * gives length of the list
+     *
+     * @return length of list as int
+     */
+    public int length() {
+        return nextindex - startIndex;
+    }
+
+    /**
+     * returns list item with given index, if out of bounds then returns null
+     * @param index is list index of a object
+     * @return list item
+     */
+    public T get(int index) {
+        if (index < length()) {
+            return (T) list[startIndex + index];
+        }
+        return null;
     }
 
     /**
@@ -69,7 +93,7 @@ public class TiraList<T> {
         list[nextindex] = item;
         nextindex++;
         //debug
-        System.out.println("item added and size:" + size());
+        System.out.println("item Added, nextI/length&items:" + nextindex + "/" + list.length + " items:" + numItemInList());
     }
 
     /**
@@ -77,7 +101,7 @@ public class TiraList<T> {
      *
      * @return int
      */
-    public int size() {
+    public int numItemInList() {
         return nextindex - startIndex;
     }
 
@@ -88,7 +112,7 @@ public class TiraList<T> {
      * @return boolean
      */
     public boolean contains(T item) {
-        int listSize = size();
+        int listSize = numItemInList();
         //debug
         System.out.println("contains listSize:" + listSize);
 
@@ -121,8 +145,8 @@ public class TiraList<T> {
      * enough then just rearranges them
      */
     private void resize() {
-        int listSize = size();
-        System.out.println("resize size:" + listSize);
+        int listSize = numItemInList();
+        System.out.println("resize: " + nextindex + "/" + list.length + " items:" + listSize);
         if (listSize <= list.length / 2) {
             for (int i = 0; i < listSize; i++) {
                 list[i] = list[startIndex + i];
@@ -131,9 +155,9 @@ public class TiraList<T> {
             Object[] newList = new Object[this.list.length * 2];
             for (int i = 0; i < listSize; i++) {
                 newList[i] = list[i + startIndex];
-                System.out.println("After resize, size:" + size() + " / " + list.length);
             }
             this.list = newList;
+            System.out.println("After resize:" + nextindex + " / " + list.length + " items:" + numItemInList());
         }
         nextindex = nextindex - startIndex;
         startIndex = 0;

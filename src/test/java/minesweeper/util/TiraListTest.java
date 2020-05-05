@@ -30,16 +30,16 @@ public class TiraListTest {
     @Test
     public void correctListSizeGiven() {
         assertEquals(4, 4);
-        assertEquals(4, this.testList.size());
+        assertEquals(4, this.testList.numItemInList());
         testList.add(new ShadowSquare(0, 0, 3));
-        assertEquals(5, this.testList.size());
+        assertEquals(5, this.testList.numItemInList());
     }
 
     @Test
     public void pollFirstRemovesFirst() {
-        assertEquals(4, this.testList.size());
+        assertEquals(4, this.testList.numItemInList());
         ShadowSquare sq = testList.pollFirst();
-        assertEquals(3, this.testList.size());
+        assertEquals(3, this.testList.numItemInList());
     }
 }
 

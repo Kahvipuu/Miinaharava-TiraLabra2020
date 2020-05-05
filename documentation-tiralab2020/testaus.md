@@ -15,8 +15,16 @@ TestApp luokkaan voi muuttaa haluamansa määrän testattavia pelejä sekä laud
 
 Kuten tuloksista näkee, niin ohjelma on kyllä ihan nopea mutta valitettavan alkukantainen vielä.
 
+#### Javan omilla listarakenteilla
 Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika |
 ------------|--------|-----------------------|-----------------------------|
 10x10 | 10 | 96/100 | 5,79 ms |
 16x16 | 40 | 57/100 | 14,09 ms |
 16x30| 99 | 3/100 | 10,46‬ ms |
+
+#### Itse tehdyllä ArrayDeque rakenteella, vielä jotain ArrayList ratkaisuja
+Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika |
+------------|--------|-----------------------|-----------------------------|
+10x10 | 10 | 94/100 | 28,07 ms |
+16x16 | 40 | 52/100 | 50,09 ms |
+16x30| 99 | 2/100 | 45,75‬ ms |

@@ -29,6 +29,8 @@ public class TiraBot implements Bot {
     private Board realBoard;
     private GameStats gameStats;
     private int debugCounter = 0;
+    private long startTime;
+    private long latestTime;
 
     public TiraBot(int width, int height) {
         this.width = width;
@@ -40,6 +42,8 @@ public class TiraBot implements Bot {
         this.candidatesForNextMove = new TiraList<>();
         this.initialize();
         addMoveToQueue(new Move(MoveType.OPEN, 2, 2));
+        this.startTime = System.currentTimeMillis();
+        this.latestTime = startTime;
     }
 
     /**
@@ -60,13 +64,15 @@ public class TiraBot implements Bot {
         ArrayList<ShadowSquare> moves = getUnopenedNotFlaggedSquares();
         System.out.println("count:" + debugCounter
                 + " possible moves/unresolved squares:" + moves.size()
-                + " latestmove:" + latestMove.type + "-" + latestMove.x + ":" + latestMove.y);
+                + " latestmove:" + latestMove.type + "-" + latestMove.x + ":" + latestMove.y
+                + " time:" + (latestTime - startTime));
         debugCounter++;
         //debug
         //
 
         if (!nextMoves.isEmpty()) {
             latestMove = nextMoves.pollFirst();
+            this.latestTime = System.currentTimeMillis();
             return latestMove;
         }
 
@@ -76,6 +82,7 @@ public class TiraBot implements Bot {
             System.out.println("found something from candidates /next move not empty");
 
             latestMove = nextMoves.pollFirst();
+            this.latestTime = System.currentTimeMillis();
             return latestMove;
         }
 
@@ -84,6 +91,7 @@ public class TiraBot implements Bot {
 
         addMoveToQueue(getRandomMove());
         latestMove = nextMoves.pollFirst();
+        this.latestTime = System.currentTimeMillis();
         return latestMove;
     }
 
@@ -181,7 +189,7 @@ public class TiraBot implements Bot {
 
         //debug
         System.out.println("count:" + debugCounter
-                + " nextAlreadyOpenedSize:" + nextAlreadyOpenedSquaresToCheck.size());
+                + " nextAlreadyOpenedSize:" + nextAlreadyOpenedSquaresToCheck.numItemInList());
 
         while (!nextAlreadyOpenedSquaresToCheck.isEmpty()) {
             ShadowSquare squareToCheck = nextAlreadyOpenedSquaresToCheck.pollFirst();
@@ -238,7 +246,9 @@ public class TiraBot implements Bot {
             for (ShadowSquare surroundingSq : surroundingSquares) {
                 if (!surroundingSq.isResolved()) {
                     surroundingSq.decreaseNotKnown();
-                    candidatesForNextMove.addLast(surroundingSq);
+                    if (!candidatesForNextMove.contains(surroundingSq)) {
+                        candidatesForNextMove.addLast(surroundingSq);
+                    };
                 }
             }
         }
@@ -260,8 +270,8 @@ public class TiraBot implements Bot {
     }
 
     /**
-     * returns ArrayList of squares surrounding given square uglyish code that I
-     * didn't want to repeat in multiple places
+     * returns ArrayList of squares surrounding given square, uglyish code that
+     * I didn't want to repeat in multiple places
      *
      * @param sq returns neighbours of this ShadowSquare as ArrayList (list type
      * subject to change)
