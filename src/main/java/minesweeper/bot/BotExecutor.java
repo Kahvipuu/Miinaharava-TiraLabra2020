@@ -1,4 +1,3 @@
-
 package minesweeper.bot;
 
 import java.util.concurrent.BlockingQueue;
@@ -6,8 +5,9 @@ import minesweeper.model.Board;
 import minesweeper.model.Move;
 
 /**
-* This class is used to encapsulate the bot to a separate thread so it can be run concurrently with the GUI updater
-*/
+ * This class is used to encapsulate the bot to a separate thread so it can be
+ * run concurrently with the GUI updater
+ */
 public class BotExecutor extends Thread {
 
     private BlockingQueue<Move> queue;
@@ -29,7 +29,7 @@ public class BotExecutor extends Thread {
             Move move = this.bot.makeMove(this.board);
             this.queue.offer(move);
             this.board.makeMove(move);
-            if (this.board.gameWon){
+            if (this.board.gameWon) {
                 break;
             }
         }

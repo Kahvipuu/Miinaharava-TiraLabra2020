@@ -32,7 +32,7 @@ public class TestApp {
         BotExecutor botExecutor = new BotExecutor(moveQueue, bot, board);
         this.gameStats = new GameStats();
         this.gameStats.startTime = System.nanoTime();
-        System.out.println("kierros:" +i +" millisec:" + System.currentTimeMillis());
+        System.out.println("kierros:" + i + " millisec:" + System.currentTimeMillis());
         botExecutor.run();
         while (!moveQueue.isEmpty()) {
             this.gameStats.update(moveQueue.poll());
