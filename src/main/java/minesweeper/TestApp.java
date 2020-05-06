@@ -23,7 +23,7 @@ public class TestApp {
     public GameStats gameStats;
     public Board board;
     /* Place your bot here */
-    public Bot bot = new TiraBot(16, 30);
+    public Bot bot = new TiraBot(32, 60);
 
     public TestApp(long seed, int width, int height, int mines, int i) {
         System.out.println("seed:" + seed);
@@ -45,12 +45,15 @@ public class TestApp {
          * Feel free to rewrite/replace this code to fit your needs.
          * !NOTE!
          */
+        int height = 32;
+        int width = 60;
+        int mines = 396;
 
         //Values saved as Pairs, this is needed to access the values of both board and gamestats.
         ArrayList<Pair<GameStats, Board>> stats = new ArrayList<>();
         //Play 100 games and save the stats and board to array
         for (int i = 0; i < 101; i++) {
-            TestApp app = new TestApp(new Random().nextLong(), 16, 30, 99, i);
+            TestApp app = new TestApp(new Random().nextLong(), height, width, mines, i);
             stats.add(new Pair<GameStats, Board>(app.gameStats, app.board));
         }
         //Sets the out stream to file test.txt in root of project.

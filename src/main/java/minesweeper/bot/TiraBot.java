@@ -62,15 +62,13 @@ public class TiraBot implements Bot {
         this.realBoard = board;
         processLastMove();
 
-        //debug
-        //sloooow.. TiraList<ShadowSquare> moves = getUnopenedNotFlaggedSquares();
+        /*debug
         System.out.println("count:" + debugCounter
                 + " possible moves/unresolved squares:" // + moves.length()
                 + " latestmove:" + latestMove.type + "-" + latestMove.x + ":" + latestMove.y
                 + " time:" + (latestTime - startTime));
         debugCounter++;
-        //debug
-        //
+        */
 
         if (!nextMoves.isEmpty()) {
             latestMove = nextMoves.pollFirst();
@@ -80,16 +78,13 @@ public class TiraBot implements Bot {
 
         decideNextMove();
         if (!nextMoves.isEmpty()) {
-            //debug
-            System.out.println("found something from candidates /next move not empty");
-
             latestMove = nextMoves.pollFirst();
             this.latestTime = System.currentTimeMillis();
             return latestMove;
         }
 
         //debug
-        System.out.println("getting random move next");
+        //System.out.println("getting random move next");
 
         addMoveToQueue(getRandomMove());
         latestMove = nextMoves.pollFirst();
@@ -134,26 +129,28 @@ public class TiraBot implements Bot {
         while (!candidatesForNextMove.isEmpty()) {
             ShadowSquare squareToEvaluate = candidatesForNextMove.pollFirst();
             //debug
+            /*
             System.out.println("decide next:" + squareToEvaluate.getX() + ":"
                     + squareToEvaluate.getY()
                     + " surrF:" + squareToEvaluate.getSurroundingFlags()
                     + " surrM:" + squareToEvaluate.getNumberOfSurroundingMines());
+            */
             if (squareToEvaluate.isResolved()) {
                 continue;
             }
             if (squareToEvaluate.getSurroundingFlags() == squareToEvaluate.getSurroundingMines()) {
                 addMoveToQueue(new Move(MoveType.CHORD, squareToEvaluate.getX(), squareToEvaluate.getY()));
-                System.out.println("chord");
+//                System.out.println("chord");
                 break;
             }
 
             if (squareToEvaluate.getSurroundingNotKnown() == squareToEvaluate.getSurroundingUnknownMines()) {
                 setSurroundingToFlags(squareToEvaluate);
-                System.out.println("surrToFlag");
+//                System.out.println("surrToFlag");
                 break;
             }
             if (squareToEvaluate.getSurroundingMines() == 2 && squareToEvaluate.getSurroundingFlags() == 0) {
-                System.out.println("if 2");
+//                System.out.println("if 2");
                 if (checkSquaresTwoMineStatus(squareToEvaluate)) {
                     break;
                 }
@@ -212,9 +209,9 @@ public class TiraBot implements Bot {
         }
 
         //debug
-        System.out.println("count:" + debugCounter
+        /*System.out.println("count:" + debugCounter
                 + " nextAlreadyOpenedSize:" + nextAlreadyOpenedSquaresToCheck.numItemInList());
-
+        */
         while (!nextAlreadyOpenedSquaresToCheck.isEmpty()) {
             ShadowSquare squareToCheck = nextAlreadyOpenedSquaresToCheck.pollFirst();
             setNumberOfMines(squareToCheck,
@@ -239,13 +236,14 @@ public class TiraBot implements Bot {
         TiraList<ShadowSquare> surroundingSquares = getSurroundingUnresolvedSquares(sq);
 
         //debug
+        /*
         System.out.println("setSurroundingToFlags:" + sq.getX() + ":" + sq.getY()
                 + " startNeighbours" + sq.getStartingNeighbours()
                 + " unknownsquares:" + sq.getSurroundingNotKnown()
                 + " unknownmines" + sq.getSurroundingUnknownMines()
                 + " surrFlags:" + sq.getSurroundingFlags()
                 + " selfMines:" + sq.getNumberOfSurroundingMines());
-        //debug
+        */
 
         for (int i = 0; i < surroundingSquares.length(); i++) {
             ShadowSquare surroundingSq = surroundingSquares.get(i);
@@ -358,7 +356,6 @@ public class TiraBot implements Bot {
      */
     protected TiraList<ShadowSquare> getCommonNeighbours(ShadowSquare self, ShadowSquare other) {
         TiraList<ShadowSquare> selfUnopenedNeigbours = getSurroundingUnopenedAndUnflaggedSquares(self);
-        System.out.println("getCommonN ; selfUnopened,length" + selfUnopenedNeigbours.length());
         TiraList<ShadowSquare> otherUnopenedNeigbours = getSurroundingUnopenedAndUnflaggedSquares(other);
         TiraList<ShadowSquare> commonNeighbours = new TiraList<>();
         for (int i = 0; i < selfUnopenedNeigbours.length(); i++) {
@@ -479,11 +476,9 @@ public class TiraBot implements Bot {
         if (!unopened.isEmpty()) {
             ShadowSquare sq = unopened.get(rng.nextInt(unopened.length()));
             //debug
-            System.out.println("random move sq:" + sq.getX() + ":" + sq.getY());
+            //System.out.println("random move sq:" + sq.getX() + ":" + sq.getY());
             return new Move(MoveType.OPEN, sq.getX(), sq.getY());
         }
-        //debug
-        System.out.println("green random highlight changed to starting move..");
         return new Move(MoveType.OPEN, 2, 2);
     }
 
@@ -670,33 +665,39 @@ public class TiraBot implements Bot {
     private boolean checkSquaresLinkedStatus(ShadowSquare squareToEvaluate) {
         TiraList<ShadowSquare> openedUnresolvedNeigbours = getSurroundingUnresolvedAndOpenedSquares(squareToEvaluate);
         // debug
-        System.out.println("LinkedStatus");
-        System.out.println("openedUnresolvedNeigbours.length:" + openedUnresolvedNeigbours.length());
+        //System.out.println("LinkedStatus");
+        //System.out.println("openedUnresolvedNeigbours:" + openedUnresolvedNeigbours.length());
+
         if (openedUnresolvedNeigbours.isEmpty()) {
-            System.out.println("isEmpty?->false");
+//            System.out.println("isEmpty?->false");
             return false;
         }
+        //Debug
+        /*
+        for (int z = 0; z < openedUnresolvedNeigbours.length(); z++) {
+            System.out.println("neighbour nro:" + z + " -> " + openedUnresolvedNeigbours.get(z).getX()
+                    + ":" + openedUnresolvedNeigbours.get(z).getY());
+        }
+        */
         TiraList<ShadowSquare> unopenedUnresolvedNeigbours = getSurroundingUnresolvedAndUnopenedSquares(squareToEvaluate);
-        System.out.println("unopenedUnresolvedNeigbours.length:" + unopenedUnresolvedNeigbours.length());
-
         for (int i = 0; i < openedUnresolvedNeigbours.length(); i++) {
             ShadowSquare neighbourToEvaluate = openedUnresolvedNeigbours.get(i);
             TiraList<ShadowSquare> commonNeighbours = getCommonNeighbours(squareToEvaluate, neighbourToEvaluate);
-            System.out.println("commonNeighbours length:" + commonNeighbours.length());
-            System.out.println("unopenedUnresolvedNeighbours:" + unopenedUnresolvedNeigbours.length());
-            int unknownNonCommonCountSelf = unopenedUnresolvedNeigbours.length() - commonNeighbours.length();
-            System.out.println("unknownNonCommmonCountSelf:" + unknownNonCommonCountSelf);
-            /* useless ??
-            if (unknownNonCommonCountSelf >= squareToEvaluate.getSurroundingUnknownMines()){
-                return false;
-            }
+            /*debug
+            System.out.println("commonNeighbours:" + commonNeighbours.length()
+                    + " unopenedUnresolvedNeigbours" + unopenedUnresolvedNeigbours.length()
+                    + " neighbour:" + openedUnresolvedNeigbours.get(i).getX() + ":" + openedUnresolvedNeigbours.get(i).getY());
              */
+            int unknownNonCommonCountSelf = unopenedUnresolvedNeigbours.length() - commonNeighbours.length();
             int commonLinkedMines = squareToEvaluate.getSurroundingUnknownMines() - unknownNonCommonCountSelf;
+            /*debug
             System.out.println("squareToEvaluate.getSurroundingUnknownMines() - unknownNonCommonCountSelf:"
                     + squareToEvaluate.getSurroundingUnknownMines() + "-" + unknownNonCommonCountSelf);
-            System.out.println("commonLinkedMines:" + commonLinkedMines);
+            System.out.println("commonLinkedMines:" + commonLinkedMines
+                    + " neighbour:" + neighbourToEvaluate.getX() + ":" + neighbourToEvaluate.getY());
+             */
             if (commonLinkedMines < 1) {
-                return false;
+                continue;
             }
 
             if (commonLinkedMines == neighbourToEvaluate.getSurroundingUnknownMines()) {
@@ -710,7 +711,9 @@ public class TiraBot implements Bot {
                         movesMade = true;
                     }
                 }
-                return movesMade;
+                if (movesMade) {
+                    return movesMade;
+                }
             }
             //both unknownmines > than linked -> doesn't work
             if (neighbourToEvaluate.getSurroundingUnknownMines() - commonLinkedMines
@@ -727,7 +730,9 @@ public class TiraBot implements Bot {
                         movesMade = true;
                     }
                 }
-                return movesMade;
+                if (movesMade) {
+                    return movesMade;
+                }
             }
         }
         return false;

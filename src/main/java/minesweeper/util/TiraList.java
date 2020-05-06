@@ -140,7 +140,8 @@ public class TiraList<T> {
      */
     private void resize() {
         int listSize = numItemInList();
-        System.out.println("resize: " + nextindex + "/" + list.length + " items:" + listSize);
+        //debug
+        //System.out.println("resize: " + nextindex + "/" + list.length + " items:" + listSize);
         if (listSize <= list.length / 2) {
             for (int i = 0; i < listSize; i++) {
                 list[i] = list[startIndex + i];
@@ -151,7 +152,8 @@ public class TiraList<T> {
                 newList[i] = list[i + startIndex];
             }
             this.list = newList;
-            System.out.println("After resize:" + nextindex + " / " + list.length + " items:" + numItemInList());
+            //debug
+            //System.out.println("After resize:" + nextindex + " / " + list.length + " items:" + numItemInList());
         }
         nextindex = nextindex - startIndex;
         startIndex = 0;
