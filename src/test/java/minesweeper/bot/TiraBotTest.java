@@ -53,7 +53,7 @@ x1002x2011
     @Test
     public void rightAmountOfPossibleMovesGiven() {
         ArrayList<Move> moves = this.tiraBot.getPossibleMoves(realBoard);
-        assertEquals(30, moves.size());
+        assertEquals(100, moves.size());
     }
     
     @Test
