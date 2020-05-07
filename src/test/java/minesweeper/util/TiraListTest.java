@@ -86,7 +86,7 @@ public class TiraListTest {
     }
     
     @Test
-    public void resizeWorks(){
+    public void resizeDoubleWorks(){
         testList.add(new ShadowSquare(5, 1, 8));
         testList.add(new ShadowSquare(6, 2, 8));
         testList.add(new ShadowSquare(7, 2, 8));
@@ -95,4 +95,28 @@ public class TiraListTest {
         assertEquals(16, this.testList.getList().length);
     }
     
+    @Test
+    public void resizeIndexResetWorks(){
+        testList.pollFirst();
+        testList.pollFirst();
+        testList.pollFirst();
+        testList.pollFirst();
+        testList.add(new ShadowSquare(5, 1, 8));
+        testList.add(new ShadowSquare(6, 2, 8));
+        testList.add(new ShadowSquare(7, 2, 8));
+        testList.add(new ShadowSquare(8, 2, 8));
+        testList.add(new ShadowSquare(9, 2, 8));
+        assertEquals(8, this.testList.getList().length);
+    }
+    
+    @Test
+    public void getOutOfBoundReturnsNull(){
+        assertNull(this.testList.get(8));
+    }
+
+    @Test
+    public void pollingEmptyListReturnsNull(){
+        assertNull(this.emptyList.pollFirst());
+    }
+
 }

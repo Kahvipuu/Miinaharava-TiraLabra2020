@@ -85,24 +85,6 @@ public class ShadowSquare {
     }
 
     /**
-     * Sets the X coordinate of the Square
-     *
-     * @param x Square's X coordinate
-     */
-    public void setX(int x) {
-        this.locationX = x;
-    }
-
-    /**
-     * Sets the Y coordinate of the Square
-     *
-     * @param y Square's Y coordinate
-     */
-    public void setY(int y) {
-        this.locationY = y;
-    }
-
-    /**
      * Whether this Square is flagged
      *
      * @return true if this Square has been flagged by the user

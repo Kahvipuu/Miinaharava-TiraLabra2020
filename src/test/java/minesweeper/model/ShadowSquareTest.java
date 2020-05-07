@@ -9,15 +9,15 @@ import static org.junit.Assert.assertTrue;
 
 public class ShadowSquareTest {
 
-    private ShadowSquare square8neighbours;
-    private ShadowSquare square5neighbours;
-    private ShadowSquare square3neighbours;
+    private ShadowSquare square8Neighbours;
+    private ShadowSquare square5Neighbours;
+    private ShadowSquare square3Neighbours;
 
     @Before
     public void setUp() {
-        square8neighbours = new ShadowSquare(8, 8, 8);
-        square5neighbours = new ShadowSquare(0, 5, 5);
-        square3neighbours = new ShadowSquare(0, 0, 3);
+        square8Neighbours = new ShadowSquare(8, 8, 8);
+        square5Neighbours = new ShadowSquare(0, 5, 5);
+        square3Neighbours = new ShadowSquare(0, 0, 3);
     }
 
     @After
@@ -27,79 +27,101 @@ public class ShadowSquareTest {
 
     @Test
     public void byDefaultSquareIsNotResolved() {
-        assertEquals(false, square8neighbours.isResolved());
+        assertEquals(false, square8Neighbours.isResolved());
     }
 
     @Test
     public void flaggedSquareIsAlsoResolved() {
-        square8neighbours.setToFlagged();
-        assertEquals(true, square8neighbours.isResolved());
+        square8Neighbours.setToFlagged();
+        assertEquals(true, square8Neighbours.isResolved());
     }
 
     @Test
     public void squareCanBeFlagged() {
-        square8neighbours.setToFlagged();
-        assertTrue(square8neighbours.isFlagged());
+        square8Neighbours.setToFlagged();
+        assertTrue(square8Neighbours.isFlagged());
     }
 
     @Test
     public void squareCanNotBeUnflagged() {
-        square8neighbours.setToFlagged();
-        square8neighbours.setToFlagged();
-        assertTrue(square8neighbours.isFlagged());
+        square8Neighbours.setToFlagged();
+        square8Neighbours.setToFlagged();
+        assertTrue(square8Neighbours.isFlagged());
     }
 
     @Test
     public void returnXWhenUnResolved() {
-        assertEquals("X", square8neighbours.toString());
+        assertEquals("X", square8Neighbours.toString());
     }
 
     @Test
     public void getXgivesX() {
-        assertEquals(8, square8neighbours.getX());
+        assertEquals(8, square8Neighbours.getX());
     }
 
     @Test
     public void getYgivesY() {
-        assertEquals(8, square8neighbours.getY());
+        assertEquals(8, square8Neighbours.getY());
     }
 
     @Test
     public void startingNeighboursAreCorrect() {
-        assertEquals(8, square8neighbours.getSurroundingNotKnown());
-        assertEquals(5, square5neighbours.getSurroundingNotKnown());
-        assertEquals(3, square3neighbours.getSurroundingNotKnown());
+        assertEquals(8, square8Neighbours.getSurroundingNotKnown());
+        assertEquals(5, square5Neighbours.getSurroundingNotKnown());
+        assertEquals(3, square3Neighbours.getSurroundingNotKnown());
+        assertEquals(5, square5Neighbours.getStartingNeighbours());
+        assertEquals(8, square8Neighbours.getStartingNeighbours());
     }
 
     @Test
     public void incrementingFlagsDecreasesNotKnown() {
-        square8neighbours.incrementSurroundingFlags();
-        assertEquals(7, square8neighbours.getSurroundingNotKnown());
+        square8Neighbours.incrementSurroundingFlags();
+        assertEquals(7, square8Neighbours.getSurroundingNotKnown());
     }
 
     @Test
     public void numberOfSurroundingMinesCanBeSet() {
-        square8neighbours.setNumberOfSurroundingMines(5);
-        assertEquals(5, square8neighbours.getSurroundingMines());
+        square8Neighbours.setNumberOfSurroundingMines(5);
+        assertEquals(5, square8Neighbours.getSurroundingMines());
     }
 
     @Test
     public void numberOfSurroundingMinesCanNotBeChangedTwice() {
-        square8neighbours.setNumberOfSurroundingMines(5);
-        square8neighbours.setNumberOfSurroundingMines(4);
-        assertEquals(5, square8neighbours.getSurroundingMines());
+        square8Neighbours.setNumberOfSurroundingMines(5);
+        square8Neighbours.setNumberOfSurroundingMines(4);
+        assertEquals(5, square8Neighbours.getSurroundingMines());
     }
 
     @Test
     public void squareCanBeSetResolved() {
-        square8neighbours.setToResolved();
-        assertTrue(square8neighbours.isResolved());
+        square8Neighbours.setToResolved();
+        assertTrue(square8Neighbours.isResolved());
     }
 
     @Test
     public void flaggingAlsoDecreasesNotKnown() {
-        square8neighbours.incrementSurroundingFlags();
-        assertEquals(7, square8neighbours.getSurroundingNotKnown());
+        square8Neighbours.incrementSurroundingFlags();
+        assertEquals(7, square8Neighbours.getSurroundingNotKnown());
     }
 
+    @Test
+    public void addingSurroundingFlagDecreasesNotKnownMines(){
+        square5Neighbours.setNumberOfSurroundingMines(3);
+        square5Neighbours.incrementSurroundingFlags();
+        assertEquals(2, square5Neighbours.getSurroundingUnknownMines());
+    }
+
+    @Test
+    public void decreaseNotKnown(){
+        square5Neighbours.decreaseNotKnown();
+        assertEquals(4, this.square5Neighbours.getSurroundingNotKnown());
+    }
+    
+    @Test
+    public void setOpened(){
+        square5Neighbours.setNumberOfSurroundingMines(2);
+        square5Neighbours.setToOpened();
+        assertTrue(square5Neighbours.isOpened());
+    }
+    
 }
