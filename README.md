@@ -9,11 +9,9 @@ Sekä vastaavat testiluokat.
 -	[Määrittelydokumentti](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/maarittely.md)
 
 ### Toteutusdokumentti
-kesken
 -	[Toteutusdokumentti](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/toteutus.md)
 
 ### Testausdokumentti
-kesken, testausta javan tietorakenteilla
 -	[Testausdokumentti](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/testaus.md)
 
 ### Viikkoraportit
@@ -22,4 +20,4 @@ kesken, testausta javan tietorakenteilla
 -   [Viikko3](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti3.md)
 -   [Viikko4](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti4.md)
 -   [Viikko5](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti5.md)
--   [Viikko6](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti6.md)
+-   [Viikko6, loppupalautuksen tunnit päivitetty](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti6.md)

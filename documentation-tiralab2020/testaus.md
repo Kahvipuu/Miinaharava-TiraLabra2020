@@ -2,20 +2,22 @@
 
 ## Mitä on testattu, miten tämä tehtiin
 Yksikkötestejä ja manuaalista testausta varsinaisen toiminnallisuuden osalta. 
-Suorituskykytestausta automatisoidusti.
+Suorituskykytestausta automatisoidusti, tarkastelukohteena ratkaisuaika sekä onnistumisprosentti.
+Testasin lisäksi olisiko System.arraycopy auttanut suurempien lautojen suorituskyvyssä, mutta ohjelmassa jonorakenteet eivät ole kerrallaan erityisen suuria, joten hyötyä ei löytynyt.
+Vaikuttaa siltä että arvailut ovat suuri resurssisyöppö, mutta tämä ajatus tietenkin pitäisi erikseen testata.
 
 ## Minkälaisilla syötteillä testaus tehtiin
-Ohjelman ajoa bottipelinä sekä ilman gui:ta automaattisesti useampia pelejä.
+Ohjelman ajoa bottipelinä sekä ilman gui:ta useita pelejä automatisoidusti.
 
 ## Miten testit voidaan toistaa
 Ohjelmassa mahdollisuus bottipeliin, jota voi käyttää gui:ssa.
 TestApp luokkaan voi muuttaa haluamansa määrän testattavia pelejä sekä laudan koon ja miinamäärän. Tällä testasin tekoälyn tehokkuutta.
+TestApp luokassa muutettava botille annettava laudan koko vastaamaan main metodin arvoja.
 
 ## Ohjelman toiminnan empiirisen testauksen tulosten esittäminen graafisessa muodossa
 Ensimmäisissä tuloksissa on mukana debuggaukseen käytetty kaikkien siirtojen etsintä jokaisen siirtopäätöksen aluksi. 
 Viimeiset tulokset ovat ilman ylimääräistä kuormaa ohjelmalle ja tästä erosta näkee jotakuinkin saavutetun edun siihen, 
 ettei käy kuin tarpeellisen osan pelilaudasta läpi ennen siirtopäätöstä.
-Toistaiseksi tuloksissa näkyy ettei botti osaa ratkaista vaikeita pelejä, joten nopea häviö parantaa kokonaistulosta.
 
 #### Botti2, turhasta karsittu versio
 Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika | Aika yhteensä |
