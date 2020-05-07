@@ -12,7 +12,10 @@ Viikko 3 | 6
 Viikko 4 | 17
 Viikko 5 | 0
 Viikko 6 | 7
-Yhteensä | 41
+Loppupalautus* | 20
+Yhteensä | 61
+
+*loppupalautukseen liittyvät tunnit lisätty 7.5.2020
 
 ## Miten ohjelma on edistynyt?
 Hidasta edelleen, jatkan vielä tämän raportin tekemisen jälkeen.

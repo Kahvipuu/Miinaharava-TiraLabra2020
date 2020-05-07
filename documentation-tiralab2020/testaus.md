@@ -17,6 +17,7 @@ Viimeiset tulokset ovat ilman ylimääräistä kuormaa ohjelmalle ja tästä ero
 ettei käy kuin tarpeellisen osan pelilaudasta läpi ennen siirtopäätöstä.
 Toistaiseksi tuloksissa näkyy ettei botti osaa ratkaista vaikeita pelejä, joten nopea häviö parantaa kokonaistulosta.
 
+#### Botti2, turhasta karsittu versio
 Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika | Aika yhteensä |
 ------------|--------|-----------------------|-----------------------------|---------------|
 10x10 | 10 | 99/100 | 1,26 ms | |

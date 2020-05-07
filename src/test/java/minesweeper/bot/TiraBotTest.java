@@ -24,11 +24,22 @@ public class TiraBotTest {
 
     @Before
     public void setUp() {
-        this.generator = new MinefieldGenerator();
-        this.realBoard = new Board(generator, 10, 10, 3);
+        this.generator = new MinefieldGenerator(1234); //seed 1234
+        this.realBoard = new Board(generator, 10, 10, 10);
         this.tiraBot = new TiraBot(this.realBoard.width, this.realBoard.height);
     }
-
+/*
+board
+0000012210
+000001xx21
+000001222x
+1100111011
+x1002x2011
+13x211101x
+1xx2000011
+1221000000
+0000000000
+*/    
     @After
     public void tearDown() {
     }
@@ -42,7 +53,7 @@ public class TiraBotTest {
     @Test
     public void rightAmountOfPossibleMovesGiven() {
         ArrayList<Move> moves = this.tiraBot.getPossibleMoves(realBoard);
-        assertEquals(100, moves.size());
+        assertEquals(30, moves.size());
     }
     
     @Test
