@@ -148,6 +148,8 @@ public class TiraList<T> {
             }
         } else {
             Object[] newList = new Object[this.list.length * 2];
+
+//            System.arraycopy(this.list, startIndex, newList, 0, this.list.length-startIndex);
             for (int i = 0; i < listSize; i++) {
                 newList[i] = list[i + startIndex];
             }
@@ -157,6 +159,15 @@ public class TiraList<T> {
         }
         nextindex = nextindex - startIndex;
         startIndex = 0;
+    }
+
+    /**
+     * normal getter, only for testin purposes
+     * 
+     * @return whole list of objects, start and next indexes not included
+     */
+    protected Object[] getList() {
+        return list;
     }
 
 }

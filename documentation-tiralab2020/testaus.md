@@ -17,12 +17,18 @@ Viimeiset tulokset ovat ilman ylimääräistä kuormaa ohjelmalle ja tästä ero
 ettei käy kuin tarpeellisen osan pelilaudasta läpi ennen siirtopäätöstä.
 Toistaiseksi tuloksissa näkyy ettei botti osaa ratkaista vaikeita pelejä, joten nopea häviö parantaa kokonaistulosta.
 
-Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika |
-------------|--------|-----------------------|-----------------------------|
-10x10 | 10 | 99/100 | 1,26 ms |
-16x16 | 40 | 82/100 | 2,28 ms |
-16x30 | 99 | 28/100 | 3,2‬0 ms |
-32x60 | 396 | 14/100 | 18,6‬0 ms |
+Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika | Aika yhteensä |
+------------|--------|-----------------------|-----------------------------|---------------|
+10x10 | 10 | 99/100 | 1,26 ms | |
+16x16 | 40 | 82/100 | 2,28 ms | |
+16x30 | 99 | 28/100 | 3,2‬0 ms | |
+32x60 | 396 | 14/100 | 18,6‬0 ms | |
+16x16 | 40 | 8057/10000 | 0,92 ms | Total 9216 ms |
+16x30 | 99 | 2525/10000 | 1,53 ms | Total 15341 ms |
+32x60 | 396 | 1112/10000 | 18,56 ms | Total 185674 ms x12 aika kun x4 koko |
+32x60 | 396 | 1019/10000 | 17,68 ms | Total 176837 ms |
+32x60 | 396 | 1122/10000 | 17,95 ms | Total  179538 ms |
+32x60 | 396 | 1091/10000 | 18,46 ms | Total 184620 ms ArrayCopy |
 
 
 #### Botti2, Viimeisin versio botista, ylimääräistä kuormaa vielä mukana

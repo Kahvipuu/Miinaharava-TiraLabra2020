@@ -62,13 +62,13 @@ public class TiraBot implements Bot {
         this.realBoard = board;
         processLastMove();
 
-        /*debug
-        System.out.println("count:" + debugCounter
-                + " possible moves/unresolved squares:" // + moves.length()
-                + " latestmove:" + latestMove.type + "-" + latestMove.x + ":" + latestMove.y
-                + " time:" + (latestTime - startTime));
-        debugCounter++;
-        */
+        //debug
+        //System.out.println("count:" + debugCounter
+        //        + " possible moves/unresolved squares:" // + moves.length()
+        //        + " latestmove:" + latestMove.type + "-" + latestMove.x + ":" + latestMove.y
+        //        + " time:" + (latestTime - startTime));
+        //debugCounter++;
+        
 
         if (!nextMoves.isEmpty()) {
             latestMove = nextMoves.pollFirst();

@@ -26,13 +26,12 @@ public class TestApp {
     public Bot bot = new TiraBot(32, 60);
 
     public TestApp(long seed, int width, int height, int mines, int i) {
-        System.out.println("seed:" + seed);
+        //System.out.println("seed:" + seed);
         board = new Board(new MinefieldGenerator(seed), width, height, mines);
         BlockingQueue<Move> moveQueue = new LinkedBlockingQueue<>();
         BotExecutor botExecutor = new BotExecutor(moveQueue, bot, board);
         this.gameStats = new GameStats();
         this.gameStats.startTime = System.nanoTime();
-        System.out.println("kierros:" + i + " millisec:" + System.currentTimeMillis());
         botExecutor.run();
         while (!moveQueue.isEmpty()) {
             this.gameStats.update(moveQueue.poll());
@@ -48,14 +47,18 @@ public class TestApp {
         int height = 32;
         int width = 60;
         int mines = 396;
-
+        long loop = 10000;
+        long startTime;
+        
         //Values saved as Pairs, this is needed to access the values of both board and gamestats.
         ArrayList<Pair<GameStats, Board>> stats = new ArrayList<>();
         //Play 100 games and save the stats and board to array
-        for (int i = 0; i < 101; i++) {
+        startTime = System.currentTimeMillis();
+        for (int i = 0; i < loop; i++) {
             TestApp app = new TestApp(new Random().nextLong(), height, width, mines, i);
             stats.add(new Pair<GameStats, Board>(app.gameStats, app.board));
         }
+        System.out.println("Total time: " +(System.currentTimeMillis()-startTime) );
         //Sets the out stream to file test.txt in root of project.
         try {
             System.setOut(new PrintStream(new File("test.txt")));
