@@ -49,7 +49,7 @@ public class TestApp {
         int mines = 396;
         long loop = 10000;
         long startTime;
-        
+
         //Values saved as Pairs, this is needed to access the values of both board and gamestats.
         ArrayList<Pair<GameStats, Board>> stats = new ArrayList<>();
         //Play 100 games and save the stats and board to array
@@ -58,7 +58,7 @@ public class TestApp {
             TestApp app = new TestApp(new Random().nextLong(), height, width, mines, i);
             stats.add(new Pair<GameStats, Board>(app.gameStats, app.board));
         }
-        System.out.println("Total time: " +(System.currentTimeMillis()-startTime) );
+        System.out.println("Total time: " + (System.currentTimeMillis() - startTime));
         //Sets the out stream to file test.txt in root of project.
         try {
             System.setOut(new PrintStream(new File("test.txt")));

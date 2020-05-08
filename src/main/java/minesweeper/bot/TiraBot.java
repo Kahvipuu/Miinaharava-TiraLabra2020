@@ -68,8 +68,6 @@ public class TiraBot implements Bot {
         //        + " latestmove:" + latestMove.type + "-" + latestMove.x + ":" + latestMove.y
         //        + " time:" + (latestTime - startTime));
         //debugCounter++;
-        
-
         if (!nextMoves.isEmpty()) {
             latestMove = nextMoves.pollFirst();
             this.latestTime = System.currentTimeMillis();
@@ -85,7 +83,6 @@ public class TiraBot implements Bot {
 
         //debug
         //System.out.println("getting random move next");
-
         addMoveToQueue(getRandomMove());
         latestMove = nextMoves.pollFirst();
         this.latestTime = System.currentTimeMillis();
@@ -134,7 +131,7 @@ public class TiraBot implements Bot {
                     + squareToEvaluate.getY()
                     + " surrF:" + squareToEvaluate.getSurroundingFlags()
                     + " surrM:" + squareToEvaluate.getNumberOfSurroundingMines());
-            */
+             */
             if (squareToEvaluate.isResolved()) {
                 continue;
             }
@@ -156,7 +153,8 @@ public class TiraBot implements Bot {
                 }
             }
             if (squareToEvaluate.isOpened() && squareToEvaluate.getSurroundingNotKnown() < 6
-                    && (squareToEvaluate.getSurroundingNotKnown() - squareToEvaluate.getSurroundingUnknownMines() < 3)) {
+                    && (squareToEvaluate.getSurroundingNotKnown()
+                    - squareToEvaluate.getSurroundingUnknownMines() < 3)) {
                 if (checkSquaresLinkedStatus(squareToEvaluate)) {
                     break;
                 }
@@ -211,7 +209,7 @@ public class TiraBot implements Bot {
         //debug
         /*System.out.println("count:" + debugCounter
                 + " nextAlreadyOpenedSize:" + nextAlreadyOpenedSquaresToCheck.numItemInList());
-        */
+         */
         while (!nextAlreadyOpenedSquaresToCheck.isEmpty()) {
             ShadowSquare squareToCheck = nextAlreadyOpenedSquaresToCheck.pollFirst();
             setNumberOfMines(squareToCheck,
@@ -243,8 +241,7 @@ public class TiraBot implements Bot {
                 + " unknownmines" + sq.getSurroundingUnknownMines()
                 + " surrFlags:" + sq.getSurroundingFlags()
                 + " selfMines:" + sq.getNumberOfSurroundingMines());
-        */
-
+         */
         for (int i = 0; i < surroundingSquares.length(); i++) {
             ShadowSquare surroundingSq = surroundingSquares.get(i);
             if (!surroundingSq.isResolved() && !surroundingSq.isOpened()) {
@@ -338,7 +335,8 @@ public class TiraBot implements Bot {
                     if (widthModifier == 0 && heightModifier == 0) {
                         continue;
                     }
-                    if (!this.shadowBoard[neighbourX][neighbourY].isOpened() && !this.shadowBoard[neighbourX][neighbourY].isFlagged()) {
+                    if (!this.shadowBoard[neighbourX][neighbourY].isOpened()
+                            && !this.shadowBoard[neighbourX][neighbourY].isFlagged()) {
                         surroundingUnopenedSquares.add(this.shadowBoard[neighbourX][neighbourY]);
                     }
                 }
@@ -585,6 +583,16 @@ public class TiraBot implements Bot {
     }
 
     /**
+     * 
+     * @param latestMove normal setter
+     */
+    public void setLatestMove(Move latestMove) {
+        this.latestMove = latestMove;
+    }
+
+    
+    
+    /**
      *
      * @return normal getter
      */
@@ -665,7 +673,7 @@ public class TiraBot implements Bot {
             System.out.println("neighbour nro:" + z + " -> " + openedUnresolvedNeigbours.get(z).getX()
                     + ":" + openedUnresolvedNeigbours.get(z).getY());
         }
-        */
+         */
         TiraList<ShadowSquare> unopenedUnresolvedNeigbours = getSurroundingUnresolvedAndUnopenedSquares(squareToEvaluate);
         for (int i = 0; i < openedUnresolvedNeigbours.length(); i++) {
             ShadowSquare neighbourToEvaluate = openedUnresolvedNeigbours.get(i);
@@ -673,7 +681,8 @@ public class TiraBot implements Bot {
             /*debug
             System.out.println("commonNeighbours:" + commonNeighbours.length()
                     + " unopenedUnresolvedNeigbours" + unopenedUnresolvedNeigbours.length()
-                    + " neighbour:" + openedUnresolvedNeigbours.get(i).getX() + ":" + openedUnresolvedNeigbours.get(i).getY());
+                    + " neighbour:" + openedUnresolvedNeigbours.get(i).getX()
+                    + ":" + openedUnresolvedNeigbours.get(i).getY());
              */
             int unknownNonCommonCountSelf = unopenedUnresolvedNeigbours.length() - commonNeighbours.length();
             int commonLinkedMines = squareToEvaluate.getSurroundingUnknownMines() - unknownNonCommonCountSelf;
@@ -694,7 +703,8 @@ public class TiraBot implements Bot {
                 boolean movesMade = false;
                 for (int z = 0; z < neighboursNeighbours.length(); z++) {
                     if (!commonNeighbours.contains(neighboursNeighbours.get(z))) {
-                        addMoveToQueue(new Move(MoveType.OPEN, neighboursNeighbours.get(z).getX(), neighboursNeighbours.get(z).getY()));
+                        addMoveToQueue(new Move(MoveType.OPEN, 
+                                neighboursNeighbours.get(z).getX(), neighboursNeighbours.get(z).getY()));
                         movesMade = true;
                     }
                 }
@@ -713,7 +723,8 @@ public class TiraBot implements Bot {
                 boolean movesMade = false;
                 for (int z = 0; z < neighboursNeighbours.length(); z++) {
                     if (!commonNeighbours.contains(neighboursNeighbours.get(z))) {
-                        addMoveToQueue(new Move(MoveType.FLAG, neighboursNeighbours.get(z).getX(), neighboursNeighbours.get(z).getY()));
+                        addMoveToQueue(new Move(MoveType.FLAG,
+                                neighboursNeighbours.get(z).getX(), neighboursNeighbours.get(z).getY()));
                         movesMade = true;
                     }
                 }
