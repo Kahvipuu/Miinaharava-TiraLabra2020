@@ -500,19 +500,6 @@ public class TiraBot implements Bot {
     }
 
     /**
-     *
-     * @param sq is the fake square At the moment this is method not used for
-     * anything.. to be deleted if use is not found..
-     */
-    protected void setSurroundingSquaresToResolved(ShadowSquare sq) {
-        TiraList<ShadowSquare> surroundingSquares = getSurroundingUnresolvedSquares(sq);
-        for (int x = 0; x < surroundingSquares.length(); x++) {
-            ShadowSquare surroundingSq = surroundingSquares.get(x);
-            surroundingSq.setToResolved();
-        }
-    }
-
-    /**
      * returns shadowSquare at coordinates xy
      *
      * @param x width
