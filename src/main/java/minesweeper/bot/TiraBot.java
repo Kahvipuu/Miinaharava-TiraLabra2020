@@ -575,6 +575,15 @@ public class TiraBot implements Bot {
     }
 
     /**
+     * Only for testing
+     * 
+     * @param candidatesForNextMove normal setter
+     */
+    public void setCandidatesForNextMove(TiraList<ShadowSquare> candidatesForNextMove) {
+        this.candidatesForNextMove = candidatesForNextMove;
+    }
+
+    /**
      *
      * @return normal getter
      */
@@ -583,6 +592,7 @@ public class TiraBot implements Bot {
     }
 
     /**
+     * Only for testing
      * 
      * @param latestMove normal setter
      */
@@ -604,7 +614,9 @@ public class TiraBot implements Bot {
      * Should only be given squares with 2 surrounding mines and not any known
      * flags. Checks if square next to this one can be opened and squares next
      * to both of these can be then flagged.
-     *
+     * Should be updated so that evaluates all situations where there is three 
+     * (and only three) unopened and all are in a row
+     * 
      * @param squareToEvaluate is the square to check
      * @return true if moves were added to queue otherwise false
      */
