@@ -339,14 +339,11 @@ x1002x2000
     }
     
     @Test
-    public void decideNextMoveLinked() {
+    public void decideNextMoveLinkedOpen() {
         realBoard.makeMove(this.tiraBot.makeMove(realBoard));
         this.tiraBot.processLastMove();
 
-        ShadowSquare sq36 = this.tiraBot.getSquare(3, 6);
-//        ShadowSquare sq26 = this.tiraBot.getSquare(2, 6);
-//        ShadowSquare sq25 = this.tiraBot.getSquare(2, 5);
-        
+        ShadowSquare sq36 = this.tiraBot.getSquare(3, 6);        
         sq36.setNumberOfSurroundingMines(1);
         this.tiraBot.resolveMoveTypeOpen(sq36);
         
@@ -363,5 +360,32 @@ x1002x2000
         assertEquals(expected.x, decided.x);
         assertEquals(expected.y, decided.y);
     }
+
+    @Test
+    public void decideNextMoveLinkedFlag() {
+        realBoard.makeMove(this.tiraBot.makeMove(realBoard));
+        this.tiraBot.processLastMove();
+
+        ShadowSquare sq06 = this.tiraBot.getSquare(0, 6);
+        ShadowSquare sq16 = this.tiraBot.getSquare(1, 6);
+        
+        sq06.setNumberOfSurroundingMines(1);
+        this.tiraBot.resolveMoveTypeOpen(sq06);
+        sq16.setNumberOfSurroundingMines(1);
+        this.tiraBot.resolveMoveTypeOpen(sq16);
+        
+        TiraList<ShadowSquare> sqList = new TiraList<>();
+        ShadowSquare sqx = this.tiraBot.getSquare(1, 4);
+        sqList.add(sqx);
+        this.tiraBot.setCandidatesForNextMove(sqList);
+        this.tiraBot.decideNextMove();
+
+        Move expected = new Move(MoveType.FLAG, 2, 6);
+        assertEquals(1, this.tiraBot.getNextMoves().length());
+        Move decided = this.tiraBot.getNextMoves().pollFirst();
+        assertEquals(expected.x, decided.x);
+        assertEquals(expected.y, decided.y);
+        assertEquals(expected.type, decided.type);
+    }    
     
 }
