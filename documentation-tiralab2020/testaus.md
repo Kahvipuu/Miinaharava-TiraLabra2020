@@ -19,14 +19,23 @@ Ensimmäisissä tuloksissa on mukana debuggaukseen käytetty kaikkien siirtojen 
 Viimeiset tulokset ovat ilman ylimääräistä kuormaa ohjelmalle ja tästä erosta näkee jotakuinkin saavutetun edun siihen, 
 ettei käy kuin tarpeellisen osan pelilaudasta läpi ennen siirtopäätöstä.
 
+#### Botti4, suljetun ruudun ylilinkitys
+Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika | Aika yhteensä |
+------------|--------|-----------------------|-----------------------------|---------------|
+16x30 | 99 | 3287/10000 | 1,89 ms | Total 18942 ms |
+16x30 | 99 | 3336/10000 | 1,77 ms | Total 17731 ms |
+64x64 | 640 | 601/1000 | 104,6 ms | Total 104560 ms |
+
+
 #### Botti3, kulmat ja reunat arvataan ensin
 Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika | Aika yhteensä |
 ------------|--------|-----------------------|-----------------------------|---------------|
 16x30 | 99 | 2912/10000 | 1,56 ms | Total 15601 ms |
 16x30 | 99 | 2936/10000 | 1,56 ms | Total 15612 ms |
-64x64 | 640 | 555/1000 | 97,3 ms | Total  97276 ms |
-64x64 | 640 | 562/1000 | 94,1 ms | Total  94092 ms |
+64x64 | 640 | 555/1000 | 97,3 ms | Total 97276 ms |
+64x64 | 640 | 562/1000 | 94,1 ms | Total 94092 ms |
 Kulmien arvaaminen ensin nosti 16x30 läpäisyprosentin noin 28%, kokeilin kerran 10k ajolla. Ei merkittävää eroa suurempaan lautaan.
+Ja hyvin pieni lisähyöty reunojen arvaamisesta.
 
 #### Botti2, turhasta karsittu versio
 Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika | Aika yhteensä |

@@ -23,7 +23,7 @@ public class TestApp {
     public GameStats gameStats;
     public Board board;
     /* Place your bot here */
-    public Bot bot = new TiraBot(16, 30);
+    public Bot bot = new TiraBot(16, 16);
 
     public TestApp(long seed, int width, int height, int mines, int i) {
         //System.out.println("seed:" + seed);
@@ -47,8 +47,8 @@ public class TestApp {
         
         // remember to change bot 
         int height = 16;
-        int width = 30;
-        int mines = 99;
+        int width = 16;
+        int mines = 40;
         long loop = 10000;
         long startTime;
 

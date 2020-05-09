@@ -166,6 +166,11 @@ public class TiraBot implements Bot {
                     break;
                 }
             }
+            if (!squareToEvaluate.isOpened()) {
+                if (checkClosedSquaresLinkedStatus(squareToEvaluate)) {
+                    break;
+                }
+            }
         }
     }
 
@@ -842,6 +847,99 @@ public class TiraBot implements Bot {
                 }
             }
         }
+        return false;
+    }
+
+    /**
+     * Should only be given unopened square with atleast two opened neighbours
+     *
+     * @param squareToEvaluate square to check
+     * @return true if moves were added to queue, otherwise false
+     */
+    private boolean checkClosedSquaresLinkedStatus(ShadowSquare squareToEvaluate) {
+        TiraList<ShadowSquare> openedUnresolvedNeigbours = getSurroundingUnresolvedAndOpenedSquares(squareToEvaluate);
+        // debug
+        //System.out.println("LinkedStatus");
+        //System.out.println("openedUnresolvedNeigbours:" + openedUnresolvedNeigbours.length());
+
+        if (openedUnresolvedNeigbours.isEmpty() || openedUnresolvedNeigbours.length() < 2) {
+//            System.out.println("isEmpty?->false");
+            return false;
+        }
+        //Debug
+        /*
+        for (int z = 0; z < openedUnresolvedNeigbours.length(); z++) {
+            System.out.println("neighbour nro:" + z + " -> " + openedUnresolvedNeigbours.get(z).getX()
+                    + ":" + openedUnresolvedNeigbours.get(z).getY());
+        }
+         */
+        boolean movesMade = false;
+        while (!openedUnresolvedNeigbours.isEmpty()) {
+            ShadowSquare self = openedUnresolvedNeigbours.pollFirst();
+            if (self.getSurroundingNotKnown() - self.getSurroundingUnknownMines() > 2){
+                continue;
+            }
+            TiraList<ShadowSquare> unopenedUnresolvedNeigbours
+                    = getSurroundingUnresolvedAndUnopenedSquares(self);
+            for (int i = 0; i < openedUnresolvedNeigbours.length(); i++) {
+                ShadowSquare neighbourToEvaluate = openedUnresolvedNeigbours.get(i);
+                TiraList<ShadowSquare> commonNeighbours = getCommonNeighbours(self, neighbourToEvaluate);
+                /*debug
+            System.out.println("commonNeighbours:" + commonNeighbours.length()
+                    + " unopenedUnresolvedNeigbours" + unopenedUnresolvedNeigbours.length()
+                    + " neighbour:" + openedUnresolvedNeigbours.get(i).getX()
+                    + ":" + openedUnresolvedNeigbours.get(i).getY());
+                 */
+                int unknownNonCommonCountSelf = unopenedUnresolvedNeigbours.length() - commonNeighbours.length();
+                int commonLinkedMines = self.getSurroundingUnknownMines() - unknownNonCommonCountSelf;
+                /*debug
+            System.out.println("squareToEvaluate.getSurroundingUnknownMines() - unknownNonCommonCountSelf:"
+                    + squareToEvaluate.getSurroundingUnknownMines() + "-" + unknownNonCommonCountSelf);
+            System.out.println("commonLinkedMines:" + commonLinkedMines
+                    + " neighbour:" + neighbourToEvaluate.getX() + ":" + neighbourToEvaluate.getY());
+                 */
+                if (commonLinkedMines < 1) {
+                    continue;
+                }
+
+                if (commonLinkedMines == neighbourToEvaluate.getSurroundingUnknownMines()) {
+                    //open neighbours nonCommon squares
+                    TiraList<ShadowSquare> neighboursNeighbours
+                            = getSurroundingUnresolvedAndUnopenedSquares(neighbourToEvaluate);
+                    for (int z = 0; z < neighboursNeighbours.length(); z++) {
+                        if (!commonNeighbours.contains(neighboursNeighbours.get(z))) {
+                            addMoveToQueue(new Move(MoveType.OPEN,
+                                    neighboursNeighbours.get(z).getX(), neighboursNeighbours.get(z).getY()));
+                            movesMade = true;
+                        }
+                    }
+                    if (movesMade) {
+                        return movesMade;
+                    }
+                }
+                //both unknownmines > than linked -> doesn't work
+                if (neighbourToEvaluate.getSurroundingUnknownMines() - commonLinkedMines
+                        == neighbourToEvaluate.getSurroundingNotKnown() - commonNeighbours.length()
+                        && (neighbourToEvaluate.getSurroundingUnknownMines() <= commonLinkedMines
+                        || self.getSurroundingUnknownMines() <= commonLinkedMines)) {
+                    //flag neigbours nonCommon squares
+                    TiraList<ShadowSquare> neighboursNeighbours
+                            = getSurroundingUnresolvedAndUnopenedSquares(neighbourToEvaluate);
+                    for (int z = 0; z < neighboursNeighbours.length(); z++) {
+                        if (!commonNeighbours.contains(neighboursNeighbours.get(z))) {
+                            addMoveToQueue(new Move(MoveType.FLAG,
+                                    neighboursNeighbours.get(z).getX(), neighboursNeighbours.get(z).getY()));
+                            movesMade = true;
+                        }
+                    }
+                    if (movesMade) {
+                        return movesMade;
+                    }
+                }
+            }
+
+        }
+
         return false;
     }
 

@@ -18,20 +18,24 @@ Ajatuskokeena edellisestä, jos vertaa lukuja: keskivaikeasta poistettu helpon a
 niin ohjelman käyttämä aika kasvaa noin 90% keskimmäisestä vaikeaan siirryttäessä. Näin ajateltuna olisi ehkä muu kuin laudan koko eliminoitu käytetystä ajasta.
 Ohjelmaa parantaessa tämä ajankäytön lineaarisuus tulisi tietenkin nykytiedon valossa katoamaan, eikä tätä ole erityistä syytä epäillä.
 
+Viimeisin botin versio ei aika ja tilavaativuuksiltaan juurikaan eroa aikaisemmista, jonkin verran siinä olisi optimoitavaa, mutta kokonaisuus on pysynyt lähes samana.
+
 ## Suorituskyky- ja O-analyysivertailu (mikäli työ vertailupainotteinen)
 Tieto mitä löysin viittasi siihen että hyvin toteutettu miinaharava tekoäly pääsisi vaikealla laudalla noin kolmasosan läpäisyprosenttiin ja vielä arvailuja parantamalla noin 37% läpäisyyn.
-Kyseistä tietoa on kuitekin hyvin vaikea validoida. Oma botti pääsee noin 25% läpäisyyn kyseisellä laudalla. 
-Parhaisiin ratkaisijoihin käytetään verrattaen raskasta analyysiä. 
-Tähän verrattuna oma ohjelmani olisi mielestäni pienellä muokkauksella hyvinkin kelvollinen, sen kevyen rakenteen ansiosta.
+Kyseistä tietoa on kuitekin hyvin vaikea validoida. Oman botin 4 versio pääsee noin 33% läpäisyyn kyseisellä laudalla. 
+Parhaisiin löytämiini ratkaisijoihin käytetään verrattaen raskasta analyysiä.
+Tähän verrattuna oma ohjelmani on kelvollinen, sen kevyen rakenteen ansiosta.
 
 ## Työn mahdolliset puutteet ja parannusehdotukset
-Arvaukset pitäisi muuttaa kokonaan, ensin kulmat, sitten reunat ja lopuksi muita avattuja lähellä olevat. Eli arvaukset pitäisi muuttaa tuntemattomien valinnoiksi.
-Edelleen ohjelmasta puuttuu kahden toisiinsa vaikuttavan ruudun huomioiminen, kun ne ovat seinän takana toisistaan. 
-Tähän on periaatteessa kuitenkin koodissa jo logiikka olemassa ja sen muuttamisen ei pitäisi olla erityisen hankalaa. Tällä hetkellä kyseinen toteutettu yhteisten naapurien kautta.
+Toistaiseksi botti ei laske pelin loppupuolella miinojen määrää ja käytä sitä apukeinona.
+Arvauksissa on edelleen kehitettävää, valintoja pitäisi lopuksi tehdä muita avattuja lähellä oleviin ruutuihin jotta niistä saisi lisäapua jo saatuun tietoon. 
+Lisäksi todennäköisyydet pitäisi laskea ainakin karkealla tasolla, nyt arvaus voi osua 50/50 ruutuun vaikka 20/80 tilanteita olisi tarjolla.
 
 ## Lähteet
 Näin vapaamuotoisesti lähteet, kaksi alla olevaa ovat tekoälyn mahdollisen maksimisuorituksen arviointiin.
+
 minesweepr, Drew Griscom Roos: http://mrgris.com/projects/minesweepr/
+
 math.stackexchange:	https://math.stackexchange.com/questions/42494/odds-of-winning-at-minesweeper-with-perfect-play
 
 Muut määrittelyn aikana käytetyt lähteet löytyvät määrittelydokumentista
