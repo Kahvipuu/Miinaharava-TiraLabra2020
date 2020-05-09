@@ -32,6 +32,10 @@ Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika | 
 32x60 | 396 | 1019/10000 | 17,68 ms | Total 176837 ms |
 32x60 | 396 | 1122/10000 | 17,95 ms | Total  179538 ms |
 32x60 | 396 | 1091/10000 | 18,46 ms | Total 184620 ms ArrayCopy |
+32x32 | 160 | 7041/10000 | 8,29 ms | Total  82935 ms x3,6 aika kun x4 koko|
+64x64 | 640 | 544/1000 | 96,1 ms | Total  96121 ms x11,5 aika edelliseen kun x4 koko|
+
+
 
 
 #### Botti2, Viimeisin versio botista, ylimääräistä kuormaa vielä mukana

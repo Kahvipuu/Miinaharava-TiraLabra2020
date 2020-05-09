@@ -686,7 +686,8 @@ public class TiraBot implements Bot {
                     + ":" + openedUnresolvedNeigbours.get(z).getY());
         }
          */
-        TiraList<ShadowSquare> unopenedUnresolvedNeigbours = getSurroundingUnresolvedAndUnopenedSquares(squareToEvaluate);
+        TiraList<ShadowSquare> unopenedUnresolvedNeigbours 
+                = getSurroundingUnresolvedAndUnopenedSquares(squareToEvaluate);
         for (int i = 0; i < openedUnresolvedNeigbours.length(); i++) {
             ShadowSquare neighbourToEvaluate = openedUnresolvedNeigbours.get(i);
             TiraList<ShadowSquare> commonNeighbours = getCommonNeighbours(squareToEvaluate, neighbourToEvaluate);

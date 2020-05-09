@@ -23,7 +23,7 @@ public class TestApp {
     public GameStats gameStats;
     public Board board;
     /* Place your bot here */
-    public Bot bot = new TiraBot(32, 60);
+    public Bot bot = new TiraBot(64, 64);
 
     public TestApp(long seed, int width, int height, int mines, int i) {
         //System.out.println("seed:" + seed);
@@ -44,10 +44,12 @@ public class TestApp {
          * Feel free to rewrite/replace this code to fit your needs.
          * !NOTE!
          */
-        int height = 32;
-        int width = 60;
-        int mines = 396;
-        long loop = 10000;
+        
+        // remember to change bot 
+        int height = 64;
+        int width = 64;
+        int mines = 640;
+        long loop = 1000;
         long startTime;
 
         //Values saved as Pairs, this is needed to access the values of both board and gamestats.
