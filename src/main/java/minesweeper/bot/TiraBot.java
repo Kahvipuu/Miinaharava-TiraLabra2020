@@ -8,7 +8,6 @@ package minesweeper.bot;
 /*ArrayList is needed for: interface bot - getPossibleMoves(), 
  it is part of the main program and not used in TiraBot */
 import java.util.ArrayList;
-import java.util.Random;
 import minesweeper.model.Board;
 import minesweeper.model.GameStats;
 import minesweeper.model.Move;
@@ -23,8 +22,6 @@ public class TiraBot implements Bot {
     private TiraList<ShadowSquare> nextAlreadyOpenedSquaresToCheck;
     private TiraList<ShadowSquare> candidatesForNextMove;
     private Move latestMove;
-    // rng should be implemented, prio last, usage doesn't really affect bot
-    private Random rng = new Random();
     private ShadowSquare[][] shadowBoard;
     private int width;
     private int height;
@@ -32,7 +29,7 @@ public class TiraBot implements Bot {
     private GameStats gameStats;
     private int debugCounter = 0;
     private long startTime;
-    private long latestTime;
+//timing    private long latestTime;
 
     public TiraBot(int width, int height) {
         this.width = width;
@@ -45,7 +42,7 @@ public class TiraBot implements Bot {
         this.initialize();
         addMoveToQueue(new Move(MoveType.OPEN, 2, 2));
         this.startTime = System.currentTimeMillis();
-        this.latestTime = startTime;
+//timing        this.latestTime = startTime;
     }
 
     /**
@@ -70,14 +67,14 @@ public class TiraBot implements Bot {
         //debugCounter++;
         if (!nextMoves.isEmpty()) {
             latestMove = nextMoves.pollFirst();
-            this.latestTime = System.currentTimeMillis();
+//timing            this.latestTime = System.currentTimeMillis();
             return latestMove;
         }
 
         decideNextMove();
         if (!nextMoves.isEmpty()) {
             latestMove = nextMoves.pollFirst();
-            this.latestTime = System.currentTimeMillis();
+//timing            this.latestTime = System.currentTimeMillis();
             return latestMove;
         }
 
@@ -85,7 +82,7 @@ public class TiraBot implements Bot {
         //System.out.println("getting random move next");
         addMoveToQueue(getRandomMove());
         latestMove = nextMoves.pollFirst();
-        this.latestTime = System.currentTimeMillis();
+//timing        this.latestTime = System.currentTimeMillis();
         return latestMove;
     }
 
@@ -465,14 +462,19 @@ public class TiraBot implements Bot {
      * @return gives random open -type move from list of unresolved squares
      */
     protected Move getRandomMove() {
+/*
         if (realBoard.gameWon || realBoard.gameLost) {
+            //this if for TestApp/BotExecutor methods
             System.out.println("game won/lost");
             return new Move(MoveType.OPEN, 2, 2);
         }
-
+*/
         TiraList<ShadowSquare> unopened = getUnopenedNotFlaggedSquares();
         if (!unopened.isEmpty()) {
-            ShadowSquare sq = unopened.get(rng.nextInt(unopened.length()));
+            long prng = System.currentTimeMillis() % unopened.length();
+//debug
+//            System.out.println("prng:" + prng +" /unopened.length:" +unopened.length() );
+            ShadowSquare sq = unopened.get((int) prng);
             //debug
             //System.out.println("random move sq:" + sq.getX() + ":" + sq.getY());
             return new Move(MoveType.OPEN, sq.getX(), sq.getY());
@@ -576,7 +578,7 @@ public class TiraBot implements Bot {
 
     /**
      * Only for testing
-     * 
+     *
      * @param candidatesForNextMove normal setter
      */
     public void setCandidatesForNextMove(TiraList<ShadowSquare> candidatesForNextMove) {
@@ -593,15 +595,13 @@ public class TiraBot implements Bot {
 
     /**
      * Only for testing
-     * 
+     *
      * @param latestMove normal setter
      */
     public void setLatestMove(Move latestMove) {
         this.latestMove = latestMove;
     }
 
-    
-    
     /**
      *
      * @return normal getter
@@ -613,10 +613,10 @@ public class TiraBot implements Bot {
     /**
      * Should only be given squares with 2 surrounding mines and not any known
      * flags. Checks if square next to this one can be opened and squares next
-     * to both of these can be then flagged.
-     * Should be updated so that evaluates all situations where there is three 
-     * (and only three) unopened and all are in a row
-     * 
+     * to both of these can be then flagged. Should be updated so that evaluates
+     * all situations where there is three (and only three) unopened and all are
+     * in a row
+     *
      * @param squareToEvaluate is the square to check
      * @return true if moves were added to queue otherwise false
      */
@@ -686,7 +686,7 @@ public class TiraBot implements Bot {
                     + ":" + openedUnresolvedNeigbours.get(z).getY());
         }
          */
-        TiraList<ShadowSquare> unopenedUnresolvedNeigbours 
+        TiraList<ShadowSquare> unopenedUnresolvedNeigbours
                 = getSurroundingUnresolvedAndUnopenedSquares(squareToEvaluate);
         for (int i = 0; i < openedUnresolvedNeigbours.length(); i++) {
             ShadowSquare neighbourToEvaluate = openedUnresolvedNeigbours.get(i);
@@ -716,7 +716,7 @@ public class TiraBot implements Bot {
                 boolean movesMade = false;
                 for (int z = 0; z < neighboursNeighbours.length(); z++) {
                     if (!commonNeighbours.contains(neighboursNeighbours.get(z))) {
-                        addMoveToQueue(new Move(MoveType.OPEN, 
+                        addMoveToQueue(new Move(MoveType.OPEN,
                                 neighboursNeighbours.get(z).getX(), neighboursNeighbours.get(z).getY()));
                         movesMade = true;
                     }
