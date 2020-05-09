@@ -9,22 +9,16 @@ Ohjelma myös arvioi seuraavia siirtoja ainoastaan jo tehtyjen siirtojen vierest
 ## Saavutetut aika- ja tilavaativuudet (m.m. O-analyysit pseudokoodista)
 Tilavaativuus on laudan koosta riippuva ja kasvaa lineaarisesti laudan koon mukana. Laudan yksittäisillä ruuduilla on useita ylläpidettäviä tietoja, kymmenen kirjoitushetkellä.
 
-Aikavaativuudesta on testausdokumentissa tarkempia arvoja. Kokonaisuudessaan vaikuttaisi siltä että botin versio 2 on jokseenkin lineaarinen aikavaativuudeltaan, ennen kuin se joutuu tekemään useampia arvauksia, 
-jotka ovat kyseisessä versiossa erittäin hitaita. Ainakin käytetty aika lisääntyi vain noin 66%, kun laudan koko kasvoi melkein tuplaksi +88%, sekä miinojen määrä nousi verrattain 24%. 
-On toisaalta hyvin mahdollista että testattavien lautojen koko on edelleen liian pieni ja ohjelmassa aikaa kuluu verrattaen johonkin muuhun enemmän. Tätä on kuitenkin tämän hetkisellä ohjelmalla vaikea testata, 
-koska suorituskyky alkaa kärsimään laudan kokoa vielä kasvattamalla. Normaali vaikein taso kun kasvatetaan nelinkertaiseksi, niin onnistumisprosentti putoaa alle puoleen.
-
-Ajatuskokeena edellisestä, jos vertaa lukuja: keskivaikeasta poistettu helpon aika 1,02 ja vaikeasta poistettu helpon aika 1,94, 
-niin ohjelman käyttämä aika kasvaa noin 90% keskimmäisestä vaikeaan siirryttäessä. Näin ajateltuna olisi ehkä muu kuin laudan koko eliminoitu käytetystä ajasta.
-Ohjelmaa parantaessa tämä ajankäytön lineaarisuus tulisi tietenkin nykytiedon valossa katoamaan, eikä tätä ole erityistä syytä epäillä.
-
+Aikavaativuudesta on testausdokumentissa tarkempia arvoja. 
+Näyttäisi siltä että aikavaativuus kasvaa syötteen kokoa nopeammin, viimeisimmässä versiossa kun laudan koon nelinkertaistaa niin ajankäyttö noin 12 kertaistuu.
+Varsinaisesti ohjelmassa ei ole muita laudan koosta exponentiaalisesti riippuvaisia toistettavia silmukoita kuin arvaaminen, joka ei ole erityisen hyvin toteutettu.
+Luonnollisesti koska miinaharava on todistettu np-täydelliseksi, niin tulos oli ennalta arvattava.
 Viimeisin botin versio ei aika ja tilavaativuuksiltaan juurikaan eroa aikaisemmista, jonkin verran siinä olisi optimoitavaa, mutta kokonaisuus on pysynyt lähes samana.
 
 ## Suorituskyky- ja O-analyysivertailu (mikäli työ vertailupainotteinen)
 Tieto mitä löysin viittasi siihen että hyvin toteutettu miinaharava tekoäly pääsisi vaikealla laudalla noin kolmasosan läpäisyprosenttiin ja vielä arvailuja parantamalla noin 37% läpäisyyn.
 Kyseistä tietoa on kuitekin hyvin vaikea validoida. Oman botin 4 versio pääsee noin 33% läpäisyyn kyseisellä laudalla. 
-Parhaisiin löytämiini ratkaisijoihin käytetään verrattaen raskasta analyysiä.
-Tähän verrattuna oma ohjelmani on kelvollinen, sen kevyen rakenteen ansiosta.
+Parhaisiin löytämiini ratkaisijoihin käytetään verrattaen raskasta analyysiä ja tähän verrattuna oma ohjelmani on hyvin kevyt.
 
 ## Työn mahdolliset puutteet ja parannusehdotukset
 Toistaiseksi botti ei laske pelin loppupuolella miinojen määrää ja käytä sitä apukeinona.

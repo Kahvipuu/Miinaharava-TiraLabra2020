@@ -1,4 +1,4 @@
-# Viikko 4
+# Viikko 6
 
 ## Mitä olen tehnyt tällä viikolla?
 Vertaisarvio tehty. Sain botin yksinkertaiset siirrot toimimaan, selviytyy helposta ja keskivaikeasta ruudukosta. Pitäisi tehdä ruutuihin linkitykset, jotta saisi tuon vaikean toimimaan.
@@ -12,10 +12,10 @@ Viikko 3 | 6
 Viikko 4 | 17
 Viikko 5 | 0
 Viikko 6 | 7
-Loppupalautus* | 20
-Yhteensä | 61
+Loppupalautus* | 30
+Yhteensä | 71
 
-*loppupalautukseen liittyvät tunnit lisätty 7.5.2020
+*loppupalautukseen liittyvät tunnit lisätty 9.5.2020
 
 ## Miten ohjelma on edistynyt?
 Hidasta edelleen, jatkan vielä tämän raportin tekemisen jälkeen.

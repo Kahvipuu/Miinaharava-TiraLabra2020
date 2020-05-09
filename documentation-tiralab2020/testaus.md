@@ -5,6 +5,7 @@ Yksikkötestejä ja manuaalista testausta varsinaisen toiminnallisuuden osalta.
 Suorituskykytestausta automatisoidusti, tarkastelukohteena ratkaisuaika sekä onnistumisprosentti.
 Testasin lisäksi olisiko System.arraycopy auttanut suurempien lautojen suorituskyvyssä, mutta ohjelmassa jonorakenteet eivät ole kerrallaan erityisen suuria, joten hyötyä ei löytynyt.
 Vaikuttaa siltä että arvailut ovat suuri resurssisyöppö, mutta tämä ajatus tietenkin pitäisi erikseen testata.
+Ajat on mitattu System.currentTimeMillis().
 
 ## Minkälaisilla syötteillä testaus tehtiin
 Ohjelman ajoa bottipelinä sekä ilman gui:ta useita pelejä automatisoidusti.
@@ -22,6 +23,7 @@ ettei käy kuin tarpeellisen osan pelilaudasta läpi ennen siirtopäätöstä.
 #### Botti4, suljetun ruudun ylilinkitys
 Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika | Aika yhteensä |
 ------------|--------|-----------------------|-----------------------------|---------------|
+16x16 | 40 | 8318/10000 | 0,95 ms | Total 9452 ms |
 16x30 | 99 | 3287/10000 | 1,89 ms | Total 18942 ms |
 16x30 | 99 | 3336/10000 | 1,77 ms | Total 17731 ms |
 64x64 | 640 | 601/1000 | 104,6 ms | Total 104560 ms |
@@ -34,6 +36,7 @@ Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika | 
 16x30 | 99 | 2936/10000 | 1,56 ms | Total 15612 ms |
 64x64 | 640 | 555/1000 | 97,3 ms | Total 97276 ms |
 64x64 | 640 | 562/1000 | 94,1 ms | Total 94092 ms |
+
 Kulmien arvaaminen ensin nosti 16x30 läpäisyprosentin noin 28%, kokeilin kerran 10k ajolla. Ei merkittävää eroa suurempaan lautaan.
 Ja hyvin pieni lisähyöty reunojen arvaamisesta.
 
@@ -50,7 +53,7 @@ Laudan koko | miinat | Onnistuneet ratkaisut | keskimääräinen ratkaisuaika | 
 32x60 | 396 | 1019/10000 | 17,68 ms | Total 176837 ms |
 32x60 | 396 | 1122/10000 | 17,95 ms | Total  179538 ms |
 32x60 | 396 | 1091/10000 | 18,46 ms | Total 184620 ms ArrayCopy |
-32x32 | 160 | 7041/10000 | 8,29 ms | Total  82935 ms x3,6 aika kun x4 koko|
+32x32 | 160 | 7041/10000 | 8,29 ms | Total  82935 ms x9 aika kun x4 koko|
 64x64 | 640 | 544/1000 | 96,1 ms | Total  96121 ms x11,5 aika edelliseen kun x4 koko|
 
 

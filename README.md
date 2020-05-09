@@ -14,6 +14,9 @@ Sekä vastaavat testiluokat.
 ### Testausdokumentti
 -	[Testausdokumentti](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/testaus.md)
 
+### Käyttöohje
+-	[käyttöohje](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/ohje.md)
+
 ### Viikkoraportit
 -   [Viikko1](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti1.md)
 -   [Viikko2](https://github.com/Kahvipuu/Miinaharava-TiraLabra2020/blob/master/documentation-tiralab2020/Viikkoraportti2.md)
